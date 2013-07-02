@@ -1,3 +1,4 @@
+require "./node.rb"
 
 class Lrta
 
