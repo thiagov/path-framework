@@ -31,7 +31,7 @@ class Prta
   end
 
   #
-  # Compute the h-value for the A* procedure. This value is the Chebyshev distance
+  # Compute the h-value. This value is the Chebyshev distance
   # from certain state to the goal state.
   #
   def h_value(current, goal)
