@@ -1,6 +1,8 @@
+#encoding: utf-8
 require "./node.rb"
 require "./planners/a_star.rb"
 require "./planners/lrta.rb"
+require "./planners/lsslrta.rb"
 require "pp"
 
 include Math
@@ -36,6 +38,8 @@ when "a_star"
   planner = AStar.new
 when "lrta"
   planner = Lrta.new
+when "lsslrta"
+  planner = LssLrta.new
 end
 
 medium_exec_time = 0.0
@@ -50,10 +54,17 @@ Observation.instance.update_observation(current_node.i, current_node.j)
 while !current_node.equals?(goal)
   start_time = Time.now
 
-  current_node = planner.get_move(current_node, goal)
+  node_candidate = planner.get_move(current_node, goal)
 
   end_time = Time.now
   cnt += 1
+
+  if current_node.is_neighbour?(node_candidate) && Map.instance.is_valid?(node_candidate.i, node_candidate.j) && Map.instance.is_passable?(node_candidate.i, node_candidate.j)
+    current_node = node_candidate
+  else
+    puts "Ocorreu um erro! Posição iniválida!"
+    exit
+  end
 
   move_time = (end_time - start_time)
   medium_exec_time += move_time
@@ -61,7 +72,7 @@ while !current_node.equals?(goal)
 
   path << current_node
   Observation.instance.update_observation(current_node.i, current_node.j)
-#  Observation.instance.print_grid(initial_node, goal, current_node)
+  #Observation.instance.print_grid(initial_node, goal, current_node)
 end
 
 # Get path cost

@@ -62,7 +62,7 @@ class Node
     Observation.instance.all_directions.each do |direction|
       ch << child(direction)
     end
-    ch
+    ch.compact
   end
 
   def equals?(node)
@@ -74,5 +74,12 @@ class Node
 
   def position
     return [self.i, self.j]
+  end
+
+  def is_neighbour?(node)
+    if (self.i - node.i).abs > 1 || (self.j - node.j).abs > 1
+      return false
+    end
+    return true
   end
 end
