@@ -3,6 +3,7 @@ require "./node.rb"
 require "./planners/a_star.rb"
 require "./planners/lrta.rb"
 require "./planners/lsslrta.rb"
+require "./planners/prta.rb"
 require "pp"
 
 include Math
@@ -33,6 +34,8 @@ when "a_star"
   planner = AStar.new
 when "lrta"
   planner = Lrta.new
+when "prta"
+  planner = Prta.new(initial_node)
 when "lsslrta"
   planner = LssLrta.new
 end
