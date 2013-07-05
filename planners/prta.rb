@@ -37,6 +37,4 @@ class Prta
   def h_value(current, goal)
     [(goal.i - current.i).abs, (goal.j - current.j).abs].max
   end
-
-
 end

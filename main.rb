@@ -4,6 +4,7 @@ require "./planners/a_star.rb"
 require "./planners/lrta.rb"
 require "./planners/lsslrta.rb"
 require "./planners/prta.rb"
+require "./planners/extended_prta.rb"
 require "pp"
 
 include Math
@@ -38,6 +39,8 @@ when "prta"
   planner = Prta.new(initial_node)
 when "lsslrta"
   planner = LssLrta.new
+when "extendedprta"
+  planner = ExtendedPrta.new(initial_node)
 end
 
 # Create some variables for the planning

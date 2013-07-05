@@ -135,4 +135,38 @@ class Observation
       return 1.41421
     end
   end
+
+  def corridor_directions(direction)
+    if @type == "octile"
+      case direction
+      when "North"
+        return ["Northeast", "North", "Northwest"]
+      when "South"
+        return ["Southeast", "South", "Southwest"]
+      when"East"
+        return ["Northeast", "East", "Southeast"]
+      when "West"
+        return ["Northwest", "West", "Southwest"]
+      when "Northeast"
+        return ["East", "Northeast", "North"]
+      when "Northwest"
+        return ["West", "Northwest", "North"]
+      when "Southeast"
+        return ["South", "Southeast", "East"]
+      when "Southwest"
+        return ["West", "Southwest", "South"]
+      end
+    else
+      case direction
+      when "North"
+        return []
+      when "South"
+        return []
+      when"East"
+        return []
+      when "West"
+        return []
+      end
+    end
+  end
 end
