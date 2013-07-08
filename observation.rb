@@ -169,4 +169,27 @@ class Observation
       end
     end
   end
+
+  def is_valid_direction?(direction, i, j)
+    case direction
+    when "North"
+      return true if Observation.instance.is_valid_and_passable?(i-1, j)
+    when "South"
+      return true if Observation.instance.is_valid_and_passable?(i+1, j)
+    when"East"
+      return true if Observation.instance.is_valid_and_passable?(i, j+1)
+    when "West"
+      return true if Observation.instance.is_valid_and_passable?(i, j-1)
+    when "Northeast"
+      return Node.new(i-1, j+1, self) if Observation.instance.is_valid_and_passable?(i-1, j+1) && Observation.instance.is_valid_and_passable?(i, j+1) && Observation.instance.is_valid_and_passable?(i-1, j)
+    when "Northwest"
+      return true if Observation.instance.is_valid_and_passable?(i-1, j-1) && Observation.instance.is_valid_and_passable?(i-1, j) && Observation.instance.is_valid_and_passable?(i, j-1)
+    when "Southeast"
+      return true if Observation.instance.is_valid_and_passable?(i+1, j+1) && Observation.instance.is_valid_and_passable?(i+1, j) && Observation.instance.is_valid_and_passable?(i, j+1)
+    when "Southwest"
+      return true if Observation.instance.is_valid_and_passable?(i+1, j-1) && Observation.instance.is_valid_and_passable?(i+1, j) && Observation.instance.is_valid_and_passable?(i, j-1)
+    end
+    return false
+  end
+
 end
