@@ -7,7 +7,7 @@ class ExtendedPrta
     @path = [initial_node]
     @not_passable = {}
 
-    @num_simulations = 45
+    @num_simulations = 20
     @simulation_depth = 45
   end
 
@@ -61,12 +61,12 @@ class ExtendedPrta
       candidate = @path.last
     end
 
-    x = []
-    @not_passable.each do |k, v|
-      x << Node.new(k[0], k[1])
-    end
-    Observation.instance.print_grid(nil, nil, nil, x)
-    STDIN.getc
+    #x = []
+    #@not_passable.each do |k, v|
+    #  x << Node.new(k[0], k[1])
+    #end
+    #Observation.instance.print_grid(nil, nil, nil, x)
+    #STDIN.getc
     return candidate
   end
 
