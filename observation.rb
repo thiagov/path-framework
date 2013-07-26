@@ -159,16 +159,82 @@ class Observation
     else
       case direction
       when "North"
-        return []
+        return ["North", "East", "West"]
       when "South"
-        return []
+        return ["South", "East", "West"]
       when"East"
-        return []
+        return ["North", "South", "East"]
       when "West"
-        return []
+        return ["North", "South", "West"]
       end
     end
   end
+
+  def special_corridor_directions(direction, init_dir)
+    if @type == "octile"
+      case init_dir
+      when "North"
+        ban = ["South", "Southeast", "Southwest"]
+      when "South"
+        ban = ["North", "Northeast", "Northwest"]
+      when "East"
+        ban = ["West", "Southwest", "Northwest"]
+      when "West"
+        ban = ["East", "Southeast", "Southwest"]
+      when "Northeast"
+        ban = ["Southwest", "South", "West"]
+      when "Northwest"
+        ban = ["Southeast", "South", "East"]
+      when "Southeast"
+        ban = ["Northwest", "North", "West"]
+      when "Southwest"
+        ban = ["Northeast", "North", "East"]
+      end
+
+      case direction
+      when "North"
+        return ["Northeast", "North", "Northwest"] - ban
+      when "South"
+        return ["Southeast", "South", "Southwest"] - ban
+      when"East"
+        return ["Northeast", "East", "Southeast"] - ban
+      when "West"
+        return ["Northwest", "West", "Southwest"] - ban
+      when "Northeast"
+        return ["East", "Northeast", "North"] - ban
+      when "Northwest"
+        return ["West", "Northwest", "North"] - ban
+      when "Southeast"
+        return ["South", "Southeast", "East"] - ban
+      when "Southwest"
+        return ["West", "Southwest", "South"] - ban
+      end
+    else
+      case init_dir
+      when "North"
+        ban = ["South"]
+      when "South"
+        ban = ["North"]
+      when "East"
+        ban = ["West"]
+      when "West"
+        ban = ["East"]
+      end
+
+      case direction
+      when "North"
+        return ["North", "East", "West"] - ban
+      when "South"
+        return ["South", "East", "West"] - ban
+      when"East"
+        return ["North", "South", "East"] - ban
+      when "West"
+        return ["North", "South", "West"] - ban
+      end
+    end
+  end
+
+
 
   def is_valid_direction?(direction, i, j)
     case direction

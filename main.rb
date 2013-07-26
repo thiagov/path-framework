@@ -6,6 +6,7 @@ require "./planners/lsslrta.rb"
 require "./planners/prta.rb"
 require "./planners/extended_prta.rb"
 require "./planners/mcts_lrta.rb"
+require "./planners/flat_mc.rb"
 require "pp"
 
 include Math
@@ -44,6 +45,8 @@ when "extendedprta"
   planner = ExtendedPrta.new(initial_node)
 when "mcts"
   planner = Mcts.new(initial_node)
+when "flatmc"
+  planner = FlatMC.new(initial_node)
 end
 
 # Create some variables for the planning
@@ -78,7 +81,7 @@ while !current_node.equals?(goal)
 
   path << current_node
   Observation.instance.update_observation(current_node.i, current_node.j)
-  #Observation.instance.print_grid(initial_node, goal, current_node)
+  Observation.instance.print_grid(initial_node, goal, current_node)
 end
 
 # Get path cost
