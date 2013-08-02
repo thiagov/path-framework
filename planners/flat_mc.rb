@@ -4,8 +4,8 @@ require "./pqueue.rb"
 class FlatMC
   def initialize(initial_node)
     @memory = {}
-    @num_simulations = 15
-    @simulation_depth = 35
+    @num_simulations = 25
+    @simulation_depth = 15
   end
 
   def get_move(current_node, goal)
@@ -51,7 +51,6 @@ class FlatMC
           child.value += val
         end
       end
-      #child.value = num_negative_inf == @num_simulations ? -1.0/0.0 : child.value.to_f/(@num_simulations.to_f - num_negative_inf.to_f)
       if num_negative_inf == @num_simulations
         child.value = -1.0/0.0
       elsif num_positive_inf == @num_simulations
@@ -66,7 +65,7 @@ class FlatMC
       end
       children << child
     end
-    pp children.map{|ch| ch.value}
+    #pp children.map{|ch| ch.value}
     return children.max_by{|node| node.value}
   end
 
