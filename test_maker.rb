@@ -1,7 +1,7 @@
 #encoding: utf-8
 
-maps = ["arena.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
-test_algo = ["lrta", "prta", "lsslrta", "extendedprta"]
+maps = ["arena2.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
+test_algo = ["flatmc"]
 
 test_algo.each do |algorithm|
   maps.each do |sf|

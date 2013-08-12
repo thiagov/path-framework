@@ -9,6 +9,11 @@ require "./planners/mcts_lrta.rb"
 require "./planners/flat_mc.rb"
 require "pp"
 
+#
+# TODO: ALGORITMOS QUEBRANDO QUANDO POSIÇÃO INICIAL É O OBJETIVO
+# TODO: TESTAR ARENA2
+#
+
 include Math
 
 # Get info from stdin
@@ -81,7 +86,7 @@ while !current_node.equals?(goal)
 
   path << current_node
   Observation.instance.update_observation(current_node.i, current_node.j)
-  Observation.instance.print_grid(initial_node, goal, current_node)
+  #Observation.instance.print_grid(initial_node, goal, current_node)
 end
 
 # Get path cost
