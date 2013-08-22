@@ -12,6 +12,8 @@ class Observation
   def initialize
   end
 
+  attr_accessor :grid
+
   def set_fields
     @visibility = 4
 

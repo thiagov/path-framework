@@ -59,8 +59,10 @@ class GameWindow < Gosu::Window
     self.caption = "#{algorithm}"
 
     @aqua    = Gosu::Color.new(0xff00ffff)
-    @green   = Gosu::Color.new(0xff00ff00)
+    @green   = Gosu::Color.new(0xff0a6a06)
+    @dark_green   = Gosu::Color.new(0x770a6a06)
     @gray    = Gosu::Color.new(0xff808080)
+    @dark_gray    = Gosu::Color.new(0x77808080)
     @red     = Gosu::Color.new(0xffff0000)
     @yellow  = Gosu::Color.new(0xffffff00)
     @fuchsia = Gosu::Color.new(0xffff00ff)
@@ -80,7 +82,7 @@ class GameWindow < Gosu::Window
     @path << @current_node
     Observation.instance.update_observation(@current_node.i, @current_node.j)
 
-    @font = Gosu::Font.new(self, Gosu::default_font_name, 12)
+    @font = Gosu::Font.new(self, Gosu::default_font_name, 72)
   end
 
   def update
@@ -130,7 +132,7 @@ class GameWindow < Gosu::Window
   end
 
   def draw
-    @font.draw("FPS: #{@fps}", 10, 10, 2, 1.0, 1.0, 0xffffff00)
+    #@font.draw("FPS: #{@fps}", 10, 10, 2, 1.0, 1.0, 0xffffff00)
     Map.instance.grid_height.times do |h|
       Map.instance.grid_width.times do |w|
         if @current_node && @current_node.i == h && @current_node.j == w
@@ -140,11 +142,19 @@ class GameWindow < Gosu::Window
         elsif @goal && @goal.i == h && @goal.j == w
           draw_quad(w*@offset, h*@offset, @yellow, w*@offset+@offset, h*@offset, @yellow, w*@offset, h*@offset + @offset, @yellow, w*@offset+@offset, h*@offset+@offset, @yellow, 1)
         elsif Map.instance.grid[h][w] == "."
-          draw_quad(w*@offset, h*@offset, @gray, w*@offset+@offset, h*@offset, @gray, w*@offset, h*@offset + @offset, @gray, w*@offset+@offset, h*@offset+@offset, @gray, 1)
+          if Observation.instance.grid[h][w] == " "
+            draw_quad(w*@offset, h*@offset, @dark_gray, w*@offset+@offset, h*@offset, @dark_gray, w*@offset, h*@offset + @offset, @dark_gray, w*@offset+@offset, h*@offset+@offset, @dark_gray, 1)
+          else
+            draw_quad(w*@offset, h*@offset, @gray, w*@offset+@offset, h*@offset, @gray, w*@offset, h*@offset + @offset, @gray, w*@offset+@offset, h*@offset+@offset, @gray, 1)
+          end
         elsif Map.instance.grid[h][w] == "S"
           draw_quad(w*@offset, h*@offset, @aqua, w*@offset+@offset, h*@offset, @aqua, w*@offset, h*@offset + @offset, @aqua, w*@offset+@offset, h*@offset+@offset, @aqua, 1)
         elsif Map.instance.grid[h][w] == "T"
-          draw_quad(w*@offset, h*@offset, @green, w*@offset+@offset, h*@offset, @green, w*@offset, h*@offset + @offset, @green, w*@offset+@offset, h*@offset+@offset, @green, 1)
+          if Observation.instance.grid[h][w] == " "
+            draw_quad(w*@offset, h*@offset, @dark_green, w*@offset+@offset, h*@offset, @dark_green, w*@offset, h*@offset + @offset, @dark_green, w*@offset+@offset, h*@offset+@offset, @dark_green, 1)
+          else
+            draw_quad(w*@offset, h*@offset, @green, w*@offset+@offset, h*@offset, @green, w*@offset, h*@offset + @offset, @green, w*@offset+@offset, h*@offset+@offset, @green, 1)
+          end
         elsif Map.instance.grid[h][w] == "@"
           draw_quad(w*@offset, h*@offset, @black, w*@offset+@offset, h*@offset, @black, w*@offset, h*@offset + @offset, @black, w*@offset+@offset, h*@offset+@offset, @black, 1)
         else
