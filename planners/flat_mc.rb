@@ -4,8 +4,8 @@ require "./pqueue.rb"
 class FlatMC
   def initialize(initial_node)
     @memory = {}
-    @num_simulations = 25
-    @simulation_depth = 10
+    @num_simulations = 10
+    @simulation_depth = 20
   end
 
   def get_move(current_node, goal)

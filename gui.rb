@@ -29,7 +29,6 @@ Observation.instance.set_fields
 initial_node = Node.new(init_i, init_j)
 goal = Node.new(end_i, end_j)
 
-
 # Set planner
 planner = nil
 case algorithm
@@ -50,18 +49,22 @@ when "flatmc"
   planner = FlatMC.new(initial_node)
 end
 
+# Initialize window
 class GameWindow < Gosu::Window
   def initialize(algorithm, initial_node, goal, planner)
+    @one_time = true
     @offset = 20
+
     super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false
     self.caption = "#{algorithm}"
-    @aqua = Gosu::Color.new(0xff00ffff)
-    @green = Gosu::Color.new(0xff00ff00)
-    @gray = Gosu::Color.new(0xff808080)
-    @red = Gosu::Color.new(0xffff0000)
-    @yellow = Gosu::Color.new(0xffffff00)
+
+    @aqua    = Gosu::Color.new(0xff00ffff)
+    @green   = Gosu::Color.new(0xff00ff00)
+    @gray    = Gosu::Color.new(0xff808080)
+    @red     = Gosu::Color.new(0xffff0000)
+    @yellow  = Gosu::Color.new(0xffffff00)
     @fuchsia = Gosu::Color.new(0xffff00ff)
-    @black = Gosu::Color.new(0xff000000)
+    @black   = Gosu::Color.new(0xff000000)
 
     # Create some variables for the planning
     @planner          = planner
@@ -72,9 +75,11 @@ class GameWindow < Gosu::Window
     @cnt              = 0
     @path             = []
     @current_node     = initial_node
+
     # Insert initial node on path
     @path << @current_node
     Observation.instance.update_observation(@current_node.i, @current_node.j)
+
     @font = Gosu::Font.new(self, Gosu::default_font_name, 12)
   end
 
@@ -104,7 +109,8 @@ class GameWindow < Gosu::Window
 
       @path << @current_node
       Observation.instance.update_observation(@current_node.i, @current_node.j)
-    else
+    elsif @one_time
+      @one_time = false
       # Get path cost
       total_cost = 0.0
       for i in (0..@path.size-2)
