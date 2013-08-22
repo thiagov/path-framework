@@ -75,9 +75,12 @@ class GameWindow < Gosu::Window
     # Insert initial node on path
     @path << @current_node
     Observation.instance.update_observation(@current_node.i, @current_node.j)
+    @font = Gosu::Font.new(self, Gosu::default_font_name, 12)
   end
 
   def update
+    @fps = Gosu::fps()
+
     if button_down? Gosu::KbEscape
       close
     end
@@ -101,7 +104,6 @@ class GameWindow < Gosu::Window
 
       @path << @current_node
       Observation.instance.update_observation(@current_node.i, @current_node.j)
-      #Observation.instance.print_grid(@initial_node, @goal, @current_node)
     else
       # Get path cost
       total_cost = 0.0
@@ -122,6 +124,7 @@ class GameWindow < Gosu::Window
   end
 
   def draw
+    @font.draw("FPS: #{@fps}", 10, 10, 2, 1.0, 1.0, 0xffffff00)
     Map.instance.grid_height.times do |h|
       Map.instance.grid_width.times do |w|
         if @current_node && @current_node.i == h && @current_node.j == w
