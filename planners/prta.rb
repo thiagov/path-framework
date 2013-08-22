@@ -4,6 +4,8 @@ class Prta
   def initialize(initial_node)
     @path = [initial_node]
     @not_passable = {}
+    # Usado somente para ser retornado e desenhado pela gui
+    @not_passable_array = []
   end
 
   def get_move(current_node, goal)
@@ -19,14 +21,17 @@ class Prta
     if !child.nil?
       if h_value(current_node, goal) < child.value
         @not_passable[current_node.position] = true
+        @not_passable_array << current_node
       end
       @path << child
       candidate = child
     else
       @not_passable[current_node.position] = true
+      @not_passable_array << current_node
       @path.pop
       candidate = @path.last
     end
+
     return candidate
   end
 
