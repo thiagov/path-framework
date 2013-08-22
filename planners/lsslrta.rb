@@ -5,6 +5,8 @@ require "./node.rb"
 class LssLrta
 
   def initialize
+    @closed_list = []
+    @open_list   = []
     @partial_path = []
     @grid_heuristic = []
     Observation.instance.grid_height.times do |h|
@@ -28,8 +30,8 @@ class LssLrta
       @partial_path = []
       lookahead = 100
       a_star_result = limited_a_star(current_node, goal, lookahead)
-      closed_list   = a_star_result[:expanded]
-      open_list     = a_star_result[:frontier]
+      @closed_list   = a_star_result[:expanded]
+      @open_list     = a_star_result[:frontier]
 
       x = a_star_result[:node]
       while x != nil
@@ -38,10 +40,10 @@ class LssLrta
       end
       @partial_path.pop
 
-      update_heuristics(closed_list, open_list, goal)
+      update_heuristics(@closed_list, @open_list, goal)
       new_node = @partial_path.pop
     end
-    return new_node
+    return new_node, @closed_list
   end
 
   private

@@ -69,7 +69,7 @@ Observation.instance.update_observation(current_node.i, current_node.j)
 while !current_node.equals?(goal)
   start_time = Time.now
 
-  node_candidate = planner.get_move(current_node, goal)
+  node_candidate, special = planner.get_move(current_node, goal)
 
   end_time          = Time.now
   cnt              += 1

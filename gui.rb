@@ -68,6 +68,8 @@ class GameWindow < Gosu::Window
     @yellow  = Gosu::Color.new(0xffffff00)
     @fuchsia = Gosu::Color.new(0xffff00ff)
     @black   = Gosu::Color.new(0xff000000)
+    @orange  = Gosu::Color.new(0xffff7f00)
+    @dark_orange  = Gosu::Color.new(0x77ff7f00)
 
     # Create some variables for the planning
     @planner          = planner
@@ -78,6 +80,9 @@ class GameWindow < Gosu::Window
     @cnt              = 0
     @path             = []
     @current_node     = initial_node
+
+    # Variable used to additional drawing
+    @special = []
 
     # Insert initial node on path
     @path << @current_node
@@ -100,7 +105,8 @@ class GameWindow < Gosu::Window
     if !@current_node.equals?(@goal)
       start_time = Time.now
 
-      node_candidate = @planner.get_move(@current_node, @goal)
+      node_candidate, @special = @planner.get_move(@current_node, @goal)
+      @special ||= []
 
       end_time          = Time.now
       @cnt              += 1
@@ -139,15 +145,29 @@ class GameWindow < Gosu::Window
   end
 
   def draw
-    #@font.draw("FPS: #{@fps}", 10, 10, 2, 1.0, 1.0, 0xffffff00)
+    #@font.draw("FPS: #{@fps}", 10, 10, 5, 1.0, 1.0, 0xffffff00)
     Map.instance.grid_height.times do |h|
       Map.instance.grid_width.times do |w|
+        is_special = false
+        @special.each do |node|
+          if node.i == h && node.j == w
+            is_special = true
+            break
+          end
+        end
+        if is_special
+          if Observation.instance.grid[h][w] == " "
+            draw_quad(w*@offset, h*@offset, @dark_orange, w*@offset+@offset, h*@offset, @dark_orange, w*@offset, h*@offset + @offset, @dark_orange, w*@offset+@offset, h*@offset+@offset, @dark_orange, 2)
+          else
+            draw_quad(w*@offset, h*@offset, @orange, w*@offset+@offset, h*@offset, @orange, w*@offset, h*@offset + @offset, @orange, w*@offset+@offset, h*@offset+@offset, @orange, 2)
+          end
+        end
         if @current_node && @current_node.i == h && @current_node.j == w
-          draw_quad(w*@offset, h*@offset, @red, w*@offset+@offset, h*@offset, @red, w*@offset, h*@offset + @offset, @red, w*@offset+@offset, h*@offset+@offset, @red, 1)
+          draw_quad(w*@offset, h*@offset, @red, w*@offset+@offset, h*@offset, @red, w*@offset, h*@offset + @offset, @red, w*@offset+@offset, h*@offset+@offset, @red, 3)
         elsif @initial_node && @initial_node.i == h && @initial_node.j == w
-          draw_quad(w*@offset, h*@offset, @yellow, w*@offset+@offset, h*@offset, @yellow, w*@offset, h*@offset + @offset, @yellow, w*@offset+@offset, h*@offset+@offset, @yellow, 1)
+          draw_quad(w*@offset, h*@offset, @yellow, w*@offset+@offset, h*@offset, @yellow, w*@offset, h*@offset + @offset, @yellow, w*@offset+@offset, h*@offset+@offset, @yellow, 3)
         elsif @goal && @goal.i == h && @goal.j == w
-          draw_quad(w*@offset, h*@offset, @yellow, w*@offset+@offset, h*@offset, @yellow, w*@offset, h*@offset + @offset, @yellow, w*@offset+@offset, h*@offset+@offset, @yellow, 1)
+          draw_quad(w*@offset, h*@offset, @yellow, w*@offset+@offset, h*@offset, @yellow, w*@offset, h*@offset + @offset, @yellow, w*@offset+@offset, h*@offset+@offset, @yellow, 3)
         elsif Map.instance.grid[h][w] == "."
           if Observation.instance.grid[h][w] == " "
             draw_quad(w*@offset, h*@offset, @dark_gray, w*@offset+@offset, h*@offset, @dark_gray, w*@offset, h*@offset + @offset, @dark_gray, w*@offset+@offset, h*@offset+@offset, @dark_gray, 1)
