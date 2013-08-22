@@ -49,15 +49,16 @@ when "flatmc"
   planner = FlatMC.new(initial_node)
 end
 
-# Initialize window
 class GameWindow < Gosu::Window
   def initialize(algorithm, initial_node, goal, planner)
     @one_time = true
     @offset = 20
 
+    # Initialize windows
     super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false
     self.caption = "#{algorithm}"
 
+    # Colors used on map
     @aqua    = Gosu::Color.new(0xff00ffff)
     @green   = Gosu::Color.new(0xff0a6a06)
     @dark_green   = Gosu::Color.new(0x770a6a06)
@@ -82,15 +83,20 @@ class GameWindow < Gosu::Window
     @path << @current_node
     Observation.instance.update_observation(@current_node.i, @current_node.j)
 
+    # Font used to display fps
     @font = Gosu::Font.new(self, Gosu::default_font_name, 72)
   end
 
   def update
+    # Get current fps
     @fps = Gosu::fps()
 
+    # Closes window
     if button_down? Gosu::KbEscape
       close
     end
+
+    # Get agent next action and adds it to the path
     if !@current_node.equals?(@goal)
       start_time = Time.now
 
@@ -111,6 +117,7 @@ class GameWindow < Gosu::Window
 
       @path << @current_node
       Observation.instance.update_observation(@current_node.i, @current_node.j)
+    # Calculate solution cost ant outputs it
     elsif @one_time
       @one_time = false
       # Get path cost
