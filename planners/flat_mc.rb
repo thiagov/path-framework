@@ -5,7 +5,7 @@ class FlatMC
   def initialize(initial_node)
     @memory = {}
     @num_simulations = 30
-    @simulation_depth = 20
+    @simulation_depth = 25
   end
 
   def get_move(current_node, goal)
