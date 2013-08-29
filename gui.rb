@@ -53,6 +53,7 @@ class GameWindow < Gosu::Window
   def initialize(algorithm, initial_node, goal, planner)
     @one_time = true
     @offset = 20
+    @pause = false
 
     # Initialize windows
     super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false
@@ -92,6 +93,10 @@ class GameWindow < Gosu::Window
     @font = Gosu::Font.new(self, Gosu::default_font_name, 72)
   end
 
+  def button_down(id)
+    @pause = !@pause if id == Gosu::KbP
+  end
+
   def update
     # Get current fps
     @fps = Gosu::fps()
@@ -101,46 +106,60 @@ class GameWindow < Gosu::Window
       close
     end
 
-    # Get agent next action and adds it to the path
-    if !@current_node.equals?(@goal)
-      start_time = Time.now
+    if !@pause
+      # Get agent next action and adds it to the path
+      if !@current_node.equals?(@goal)
+        start_time = Time.now
 
-      node_candidate, @special = @planner.get_move(@current_node, @goal)
-      @special ||= []
+        node_candidate, @special = @planner.get_move(@current_node, @goal)
+        @special ||= []
 
-      end_time          = Time.now
-      @cnt              += 1
-      move_time         = (end_time - start_time)
-      @medium_exec_time += move_time
-      @longest_time      = move_time if move_time > @longest_time
+        end_time          = Time.now
+        @cnt              += 1
+        move_time         = (end_time - start_time)
+        @medium_exec_time += move_time
+        @longest_time      = move_time if move_time > @longest_time
 
-      if @current_node.is_neighbour?(node_candidate) && Map.instance.is_valid?(node_candidate.i, node_candidate.j) && Map.instance.is_passable?(node_candidate.i, node_candidate.j)
-        @current_node = node_candidate
-      else
-        puts "Ocorreu um erro! Posição iniválida!"
-        exit
-      end
-
-      @path << @current_node
-      Observation.instance.update_observation(@current_node.i, @current_node.j)
-    # Calculate solution cost ant outputs it
-    elsif @one_time
-      @one_time = false
-      # Get path cost
-      total_cost = 0.0
-      for i in (0..@path.size-2)
-        node1 = @path[i]
-        node2 = @path[i+1]
-        sum = (node1.i - node2.i).abs + (node1.j - node2.j).abs
-
-        if sum%2 == 0
-          total_cost += 1.41421
+        if @current_node.is_neighbour?(node_candidate) && Map.instance.is_valid?(node_candidate.i, node_candidate.j) && Map.instance.is_passable?(node_candidate.i, node_candidate.j)
+          @current_node = node_candidate
         else
-          total_cost += 1.0
+          puts "Ocorreu um erro! Posição iniválida!"
+          exit
         end
+
+        @path << @current_node
+        Observation.instance.update_observation(@current_node.i, @current_node.j)
+      # Calculate solution cost ant outputs it
+      elsif @one_time
+        @one_time = false
+        # Get path cost
+        total_cost = 0.0
+        for i in (0..@path.size-2)
+          node1 = @path[i]
+          node2 = @path[i+1]
+          sum = (node1.i - node2.i).abs + (node1.j - node2.j).abs
+
+          if sum%2 == 0
+            total_cost += 1.41421
+          else
+            total_cost += 1.0
+          end
+        end
+        # Print output
+        puts "#{total_cost} #{@medium_exec_time/@cnt.to_f} #{@longest_time}"
       end
-      # Print output
-      puts "#{total_cost} #{@medium_exec_time/@cnt.to_f} #{@longest_time}"
+
+     # if !@one_time && @current_node.equals?(@goal)
+     #   @one_time = true
+     #   @medium_exec_time = 0.0
+     #   @longest_time     = 0.0
+     #   @cnt              = 0
+     #   @path             = []
+     #   @current_node     = @initial_node
+     #   @path << @current_node
+     #   Observation.instance.set_fields
+     #   Observation.instance.update_observation(@current_node.i, @current_node.j)
+     # end
     end
   end
 
