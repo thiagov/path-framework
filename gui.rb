@@ -7,6 +7,7 @@ require "./planners/prta.rb"
 require "./planners/extended_prta.rb"
 require "./planners/mcts_lrta.rb"
 require "./planners/flat_mc.rb"
+require "./planners/rtaa.rb"
 require "pp"
 require "gosu"
 
@@ -41,6 +42,8 @@ when "prta"
   planner = Prta.new(initial_node)
 when "lsslrta"
   planner = LssLrta.new
+when "rtaa"
+  planner = Rtaa.new
 when "extendedprta"
   planner = ExtendedPrta.new(initial_node)
 when "mcts"
