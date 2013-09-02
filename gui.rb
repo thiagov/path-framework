@@ -53,7 +53,7 @@ class GameWindow < Gosu::Window
   def initialize(algorithm, initial_node, goal, planner)
     @one_time = true
     @offset = 20
-    @pause = false
+    @pause = true
 
     # Initialize windows
     super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false
