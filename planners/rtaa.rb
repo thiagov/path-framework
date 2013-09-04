@@ -2,6 +2,7 @@
 
 require "./node.rb"
 
+# Real Time adaptative A*
 class Rtaa
   def initialize
     @partial_path   = []
