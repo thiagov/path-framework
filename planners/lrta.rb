@@ -35,16 +35,28 @@ class Lrta
 
   private
 
+# def h_value(current, goal)
+#   if @grid_heuristic[current.i][current.j].nil?
+#     dy = (goal.i - current.i).abs.to_f
+#     dx = (goal.j - current.j).abs.to_f
+#
+#     if dx > dy
+#       return 1.41421*dy + 1.0*(dx-dy)
+#     else
+#       return 1.41421*dx + 1.0*(dy-dx)
+#     end
+#   else
+#     @grid_heuristic[current.i][current.j]
+#   end
+# end
+
+  #
+  # Compute the h-value for the A* procedure. This value is the Chebyshev  distance
+  # from certain state to the goal state, or a value previously defined.
+  #
   def h_value(current, goal)
     if @grid_heuristic[current.i][current.j].nil?
-      dy = (goal.i - current.i).abs.to_f
-      dx = (goal.j - current.j).abs.to_f
-
-      if dx > dy
-        return 1.41421*dy + 1.0*(dx-dy)
-      else
-        return 1.41421*dx + 1.0*(dy-dx)
-      end
+      [(goal.i - current.i).abs, (goal.j - current.j).abs].max
     else
       @grid_heuristic[current.i][current.j]
     end
