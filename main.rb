@@ -8,6 +8,9 @@ require "./planners/extended_prta.rb"
 require "./planners/mcts_lrta.rb"
 require "./planners/flat_mc.rb"
 require "./planners/rtaa.rb"
+require "./planners/tba.rb"
+require "./planners/rtba.rb"
+require "./planners/tbaa.rb"
 require "pp"
 
 #
@@ -55,6 +58,12 @@ when "mcts"
   planner = Mcts.new(initial_node)
 when "flatmc"
   planner = FlatMC.new(initial_node)
+when "tba"
+  planner = Tba.new(initial_node, goal)
+when "rtba"
+  planner = Rtba.new(initial_node, goal)
+when "tbaa"
+  planner = Tbaa.new(initial_node, goal)
 end
 
 # Create some variables for the planning

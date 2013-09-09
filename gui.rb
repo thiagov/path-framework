@@ -8,6 +8,9 @@ require "./planners/extended_prta.rb"
 require "./planners/mcts_lrta.rb"
 require "./planners/flat_mc.rb"
 require "./planners/rtaa.rb"
+require "./planners/tba.rb"
+require "./planners/rtba.rb"
+require "./planners/tbaa.rb"
 require "pp"
 require "gosu"
 
@@ -50,6 +53,12 @@ when "mcts"
   planner = Mcts.new(initial_node)
 when "flatmc"
   planner = FlatMC.new(initial_node)
+when "tba"
+  planner = Tba.new(initial_node, goal)
+when "rtba"
+  planner = Rtba.new(initial_node, goal)
+when "tbaa"
+  planner = Tbaa.new(initial_node, goal)
 end
 
 class GameWindow < Gosu::Window
@@ -59,7 +68,7 @@ class GameWindow < Gosu::Window
     @pause = true
 
     # Initialize windows
-    super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false
+    super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false, 1000/60
     self.caption = "#{algorithm}"
 
     # Colors used on map
