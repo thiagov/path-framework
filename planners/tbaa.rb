@@ -2,6 +2,7 @@
 
 require "./node.rb"
 
+# TODO: o initialize_state nao deveria ser chamado somente quando o estado vai para closed list?
 # Time-bounded adaptative A*
 # A idéia é a mesma do RTBA*. No entanto, ao recomeçar um A*, o valor do
 # f-value ao último nó a ser expandido pelo A* anterior é armazenado. Esse
