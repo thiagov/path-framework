@@ -132,15 +132,15 @@ class LssLrta
     while !remade_closed_list.empty?
       s = remade_open_list.pop
       remade_closed_list.delete(s.position) if remade_closed_list.include?(s.position)
-      s.children.each do |child|
-        # The comparison here considers all actions have weight 1. This can be modified if we want the
-        # actions to have different values.
-        if remade_closed_list.include?(child.position) && h_value(child, final_node) > (h_value(s, final_node) + 1)
-          @grid_heuristic[child.i][child.j] = h_value(s, final_node) + 1
-          remade_open_list.push(child)
+      Observation.instance.all_directions.each do |direction|
+        child = s.child(direction)
+        if child
+          if remade_closed_list.include?(child.position) && h_value(child, final_node) > (h_value(s, final_node) + Observation.instance.direction_cost(direction))
+            @grid_heuristic[child.i][child.j] = h_value(s, final_node) + Observation.instance.direction_cost(direction)
+            remade_open_list.push(child)
+          end
         end
       end
     end
   end
-
 end
