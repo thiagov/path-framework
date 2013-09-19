@@ -11,6 +11,8 @@ require "./planners/rtaa.rb"
 require "./planners/tba.rb"
 require "./planners/rtba.rb"
 require "./planners/tbaa.rb"
+require "./planners/flrta.rb"
+require "./planners/plrta.rb"
 require "pp"
 require "gosu"
 
@@ -59,6 +61,10 @@ when "rtba"
   planner = Rtba.new(initial_node, goal)
 when "tbaa"
   planner = Tbaa.new(initial_node, goal)
+when "flrta"
+  planner = Flrta.new(initial_node)
+when "plrta"
+  planner = Plrta.new
 end
 
 class GameWindow < Gosu::Window
