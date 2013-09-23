@@ -76,11 +76,16 @@ class Tbaa
   end
 
   def get_move(current_node, goal)
+    @expanded_states = 0
+    planning_episode = false
+
     next_node = nil
 
     restart_a_star(current_node, goal) if start_new_search?(goal)
 
     if !@goal_found
+      planning_episode = true
+
       x = limited_a_star(goal, @lookahead)
       @goal_found = x if x.position == goal.position
     else
@@ -102,7 +107,7 @@ class Tbaa
       next_node = @final_path.pop
     end
 
-    return next_node, @path
+    return next_node, @path, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
   end
 
   #
@@ -112,7 +117,6 @@ class Tbaa
   #   or the last expanded node if the lookahead goes down to 0.
   #
   def limited_a_star(final_node, lookahead)
-    num_expanded = 0
     loop do
       return nil if @open_list.empty?
       current_node = @open_list.pop
@@ -120,7 +124,7 @@ class Tbaa
       return current_node if current_node.position == final_node.position
       @closed_list_hash[current_node.position] = true
       @closed_list << current_node
-      num_expanded += 1
+      @expanded_states += 1
       lookahead -= 1
 
       Observation.instance.all_directions.each do |direction|

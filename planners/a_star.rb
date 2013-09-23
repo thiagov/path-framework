@@ -10,8 +10,16 @@ class AStar
   end
 
   def get_move(current_node, goal)
+    expanded_states  = 0
+    planning_episode = false
+
     if @path.empty?
+      planning_episode = true
+
       a_star_result = a_star(current_node, goal)
+
+      expanded_states = a_star_result[:num_expanded]
+
       x = a_star_result[:node]
       while x != nil
         @path << x
@@ -19,7 +27,7 @@ class AStar
       end
       @path.pop
     end
-    return @path.pop
+    return @path.pop, nil, {:planning_episode => planning_episode, :expanded_states => expanded_states}
   end
 
   private
@@ -64,14 +72,7 @@ class AStar
   # Distancia de Chebyshev entre dois pontos específicos
   #
   def dist(current, goal)
-    dy = (goal.i - current.i).abs.to_f
-    dx = (goal.j - current.j).abs.to_f
-
-    return 0
-    #if dx > dy
-    #  return 1.41421*dy + 1.0*(dx-dy)
-    #else
-    #  return 1.41421*dx + 1.0*(dy-dx)
-    #end
+    return [(goal.i - current.i).abs, (goal.j - current.j).abs].max
+    #return 0
   end
 end

@@ -18,6 +18,9 @@ class Rtaa
   end
 
   def get_move(current_node, goal)
+    expanded_states  = 0
+    planning_episode = false
+
     new_node = nil
     if !@partial_path.empty?
       candidate = @partial_path.pop
@@ -27,11 +30,13 @@ class Rtaa
     end
 
     if new_node.nil?
+      planning_episode = true
       @partial_path = []
 
-      a_star_result = limited_a_star(current_node, goal, @lookahead)
-      @closed_list   = a_star_result[:expanded]
-      open_list     = a_star_result[:frontier]
+      a_star_result   = limited_a_star(current_node, goal, @lookahead)
+      expanded_states = a_star_result[:num_expanded]
+      @closed_list    = a_star_result[:expanded]
+      open_list       = a_star_result[:frontier]
 
       next_to_expand = open_list.pop
 
@@ -48,7 +53,8 @@ class Rtaa
 
       new_node = @partial_path.pop
     end
-    return new_node, @closed_list
+
+    return new_node, @closed_list, {:planning_episode => planning_episode, :expanded_states => expanded_states}
   end
 
   #

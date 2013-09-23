@@ -24,6 +24,8 @@ class Plrta
 
   def get_move(current_node, goal)
     @updated = []
+    @expanded_states = 0
+    planning_episode = true
 
     # Processo de aprendizado utilizando priority_queue
     state_update(current_node.position, goal)
@@ -46,7 +48,7 @@ class Plrta
     end
     next_node = neighbours.min_by{|el| el[:h]}[:node]
 
-    return next_node, @updated
+    return next_node, @updated, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
   end
 
   def state_update(node_pos, goal)
@@ -60,6 +62,8 @@ class Plrta
     end
     selected = neighbours.min_by{|el| el[:h]}
     delta = selected[:h] - h_value(node, goal)
+
+    @expanded_states += 1
 
     if delta > 0
       @updated << node
@@ -89,7 +93,7 @@ class Plrta
   end
 
   #
-  # Compute the h-value for the A* procedure. This value is the Chebyshev  distance
+  # Compute the h-value. This value is the Chebyshev  distance
   # from certain state to the goal state, or a value previously defined.
   #
   def h_value(current, goal)

@@ -18,6 +18,9 @@ class LssLrta
   end
 
   def get_move(current_node, goal)
+    expanded_states  = 0
+    planning_episode = false
+
     new_node = nil
     if !@partial_path.empty?
       candidate = @partial_path.pop
@@ -27,11 +30,14 @@ class LssLrta
     end
 
     if new_node.nil?
+      planning_episode = true
       @partial_path = []
+
       lookahead = 100
       a_star_result = limited_a_star(current_node, goal, lookahead)
-      @closed_list   = a_star_result[:expanded]
-      @open_list     = a_star_result[:frontier]
+      expanded_states = a_star_result[:num_expanded]
+      @closed_list    = a_star_result[:expanded]
+      @open_list      = a_star_result[:frontier]
 
       x = a_star_result[:node]
       while x != nil
@@ -43,7 +49,8 @@ class LssLrta
       update_heuristics(@closed_list, @open_list, goal)
       new_node = @partial_path.pop
     end
-    return new_node, @closed_list
+
+    return new_node, @closed_list, {:planning_episode => planning_episode, :expanded_states => expanded_states}
   end
 
   private

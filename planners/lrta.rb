@@ -13,7 +13,11 @@ class Lrta
   end
 
   def get_move(current_node, goal)
+    expanded_states   = 0
+    planning_episode  = false
 
+    planning_episode   = true
+    expanded_states   += 1
     direction = Observation.instance.all_directions.min_by do |dir|
       child = current_node.child(dir)
       if child
@@ -30,7 +34,7 @@ class Lrta
       @grid_heuristic[current_node.i][current_node.j] = new_h
     end
 
-    return child
+    return child, nil, {:planning_episode => planning_episode, :expanded_states => expanded_states}
   end
 
   private

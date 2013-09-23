@@ -9,6 +9,11 @@ class Prta
   end
 
   def get_move(current_node, goal)
+    expanded_states   = 0
+    planning_episode  = false
+
+    planning_episode   = true
+    expanded_states   += 1
     child = nil
     Observation.instance.all_directions.each do |direction|
       ch = current_node.child(direction)
@@ -32,7 +37,7 @@ class Prta
       candidate = @path.last
     end
 
-    return candidate
+    return candidate, nil, {:planning_episode => planning_episode, :expanded_states => expanded_states}
   end
 
   #
