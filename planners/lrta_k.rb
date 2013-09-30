@@ -12,6 +12,7 @@ class LrtaK
     end
 
     @path_hash = {}
+    @supp_hash = {}
     @k = 10
   end
 
@@ -44,7 +45,7 @@ class LrtaK
       if lookahead_update_one(v, goal)
         Observation.instance.all_directions.each do |dir|
           child = v.child(dir)
-          if child && @path_hash[child.position] && cont > 0
+          if child && @path_hash[child.position] && cont > 0 && v.position == @supp_hash[child.position]
             q.push(child)
             cont -= 1
           end
@@ -66,6 +67,8 @@ class LrtaK
 
     child = current_node.child(direction)
     new_h = h_value(child, goal) + Observation.instance.direction_cost(direction)
+
+    @supp_hash[current_node.position] = child.position
 
     if new_h > h_value(current_node, goal)
       @grid_heuristic[current_node.i][current_node.j] = new_h
