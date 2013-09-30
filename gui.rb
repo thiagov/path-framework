@@ -13,6 +13,7 @@ require "./planners/rtba.rb"
 require "./planners/tbaa.rb"
 require "./planners/flrta.rb"
 require "./planners/plrta.rb"
+require "./planners/lrta_k.rb"
 require "pp"
 require "gosu"
 
@@ -65,6 +66,8 @@ when "flrta"
   planner = Flrta.new(initial_node)
 when "plrta"
   planner = Plrta.new
+when "lrta_k"
+  planner = LrtaK.new
 end
 
 class GameWindow < Gosu::Window

@@ -12,6 +12,7 @@ require "./planners/tba.rb"
 require "./planners/rtba.rb"
 require "./planners/tbaa.rb"
 require "./planners/plrta.rb"
+require "./planners/lrta_k.rb"
 require "pp"
 
 #
@@ -67,6 +68,8 @@ when "tbaa"
   planner = Tbaa.new(initial_node, goal)
 when "plrta"
   planner = Plrta.new
+when "lrta_k"
+  planner = LrtaK.new
 end
 
 # Create some variables for the planning
