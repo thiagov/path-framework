@@ -10,7 +10,7 @@ require "./node.rb"
 # como no adaptative A*.
 class Tbaa
   def initialize(root, final_node)
-    @lookahead = 100
+    @lookahead = 1300
 
     @search_number = 0
     @search = {}

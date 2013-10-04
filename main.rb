@@ -13,6 +13,7 @@ require "./planners/rtba.rb"
 require "./planners/tbaa.rb"
 require "./planners/plrta.rb"
 require "./planners/lrta_k.rb"
+require "./planners/d_lite.rb"
 require "pp"
 
 #
@@ -70,6 +71,8 @@ when "plrta"
   planner = Plrta.new
 when "lrta_k"
   planner = LrtaK.new
+when "d_lite"
+  planner = DLite.new(initial_node, goal)
 end
 
 # Create some variables for the planning
