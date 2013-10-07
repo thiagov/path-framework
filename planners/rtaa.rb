@@ -4,10 +4,10 @@ require "./node.rb"
 
 # Real Time adaptative A*
 class Rtaa
-  def initialize
+  def initialize(lookahead)
     @partial_path   = []
     @closed_list    = []
-    @lookahead      = 100
+    @lookahead      = lookahead > 0 ? lookahead : 100
     @grid_heuristic = []
     Observation.instance.grid_height.times do |h|
       @grid_heuristic[h] = []

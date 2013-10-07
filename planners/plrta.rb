@@ -5,7 +5,7 @@ require "priority_queue"
 
 class Plrta
 
-  def initialize
+  def initialize(queue_size, num_updates)
     @grid_heuristic = []
     Observation.instance.grid_height.times do |h|
       @grid_heuristic[h] = []
@@ -15,8 +15,8 @@ class Plrta
     end
 
     @queue = PriorityQueue.new
-    @queue_max_length = 39
-    @num_updates = 100
+    @queue_max_length = queue_size > 0 ? queue_size : 39
+    @num_updates = num_updates > 0 ? num_updates : 100
 
     # Usada somente para imprimir na tela
     @updated = []

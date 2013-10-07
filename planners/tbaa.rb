@@ -9,8 +9,8 @@ require "./node.rb"
 # valor é utilizado posteriormente para atualizar h-values quando possível, assim
 # como no adaptative A*.
 class Tbaa
-  def initialize(root, final_node)
-    @lookahead = 1150
+  def initialize(root, final_node, lookahead)
+    @lookahead = lookahead > 0 ? lookahead : 1150
 
     @search_number = 0
     @search = {}

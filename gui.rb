@@ -21,12 +21,14 @@ require "gosu"
 include Math
 
 # Get info from stdin
-init_i   = ARGV[0].to_i
-init_j   = ARGV[1].to_i
-end_i    = ARGV[2].to_i
-end_j    = ARGV[3].to_i
-map_name = ARGV[4]
-algorithm = ARGV[5]
+init_i     = ARGV[0].to_i
+init_j     = ARGV[1].to_i
+end_i      = ARGV[2].to_i
+end_j      = ARGV[3].to_i
+map_name   = ARGV[4]
+algorithm  = ARGV[5]
+lookahead  = ARGV[6].to_i
+queue_size = ARGV[7].to_i
 
 # Initialize map and observation
 Map.instance.read_map(map_name)
@@ -48,9 +50,9 @@ when "lrta"
 when "prta"
   planner = Prta.new(initial_node)
 when "lsslrta"
-  planner = LssLrta.new
+  planner = LssLrta.new(lookahead)
 when "rtaa"
-  planner = Rtaa.new
+  planner = Rtaa.new(lookahead)
 when "extendedprta"
   planner = ExtendedPrta.new(initial_node)
 when "mcts"
@@ -58,17 +60,17 @@ when "mcts"
 when "flatmc"
   planner = FlatMC.new(initial_node)
 when "tba"
-  planner = Tba.new(initial_node, goal)
+  planner = Tba.new(initial_node, goal, lookahead)
 when "rtba"
   planner = Rtba.new(initial_node, goal)
 when "tbaa"
-  planner = Tbaa.new(initial_node, goal)
+  planner = Tbaa.new(initial_node, goal, lookahead)
 when "flrta"
   planner = Flrta.new(initial_node)
 when "plrta"
-  planner = Plrta.new
+  planner = Plrta.new(queue_size, lookahead)
 when "lrta_k"
-  planner = LrtaK.new
+  planner = LrtaK.new(lookahead)
 when "d_lite"
   planner = DLite.new(initial_node, goal)
 end

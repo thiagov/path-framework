@@ -9,8 +9,8 @@ require "./node.rb"
 # na direção mais promissora do A* corrente a cada iteração.
 class Tba
 
-  def initialize(root, final_node)
-    @lookahead = 100
+  def initialize(root, final_node, lookahead)
+    @lookahead = lookahead > 0 ? lookahead : 100
 
     @root = Node.new(root.i, root.j)
     @root.depth = 0

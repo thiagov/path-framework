@@ -2,7 +2,7 @@ require "./node.rb"
 
 class LrtaK
 
-  def initialize
+  def initialize(lookahead)
     @grid_heuristic = []
     Observation.instance.grid_height.times do |h|
       @grid_heuristic[h] = []
@@ -13,7 +13,7 @@ class LrtaK
 
     @path_hash = {}
     @supp_hash = {}
-    @k = 10
+    @k = lookahead > 0 ? lookahead : 10
   end
 
   def get_move(current_node, goal)

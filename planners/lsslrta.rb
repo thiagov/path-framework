@@ -4,7 +4,7 @@ require "./node.rb"
 
 class LssLrta
 
-  def initialize
+  def initialize(lookahead)
     @closed_list = []
     @open_list   = []
     @partial_path = []
@@ -15,6 +15,7 @@ class LssLrta
         @grid_heuristic[h][w] = nil
       end
     end
+    @lookahead = lookahead > 0 ? lookahead : 100
   end
 
   def get_move(current_node, goal)
@@ -33,8 +34,7 @@ class LssLrta
       planning_episode = true
       @partial_path = []
 
-      lookahead = 100
-      a_star_result = limited_a_star(current_node, goal, lookahead)
+      a_star_result = limited_a_star(current_node, goal, @lookahead)
       expanded_states = a_star_result[:num_expanded]
       @closed_list    = a_star_result[:expanded]
       @open_list      = a_star_result[:frontier]
