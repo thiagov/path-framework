@@ -20,6 +20,15 @@ class DLite
 
     @first_run = true
     @last = @start
+
+    @grid = []
+    Observation.instance.grid_height.times do |h|
+      @grid[h] = []
+      Observation.instance.grid_width.times do |w|
+        @grid[h][w] = " "
+      end
+    end
+
   end
 
   def calculate_key(node)
@@ -124,6 +133,11 @@ class DLite
         update_vertex(u_node)
       end
     end
+
+    @test = []
+    @rhs.each_pair do |k, v|
+      @test << [Node.new(k[0], k[1]), v]
+    end
   end
 
   #
@@ -140,8 +154,61 @@ class DLite
 
   def get_move(current_node, final_node)
     compute_shortest_path(final_node) if @first_run
+
+    changed = []
+    Observation.instance.all_directions.each do |dir|
+      child = current_node.any_child(dir)
+      g = Observation.instance.grid[child.i][child.j]
+      if g != @grid[child.i][child.j] && g != '.'
+        #changed << [current_node, dir]
+        changed.concat child.predecessors
+      end
+      @grid[child.i][child.j] = g
+    end
+    puts "======================"
+    puts changed
+
+    changed = [] if @first_run
     @first_run = false
 
+    if !changed.empty?
+      @km = @km + h_value(@last, @start)
+      @last = @start
+
+      cands = []
+      @changed = []
+      changed.each do |node_tuple|
+        node      = node_tuple[0]
+        direction = node_tuple[1]
+        old_cost  = Observation.instance.direction_cost(direction)
+        candidate = node.any_child(direction)
+        #cands << candidate
+        @changed << [node, 0]
+        if get_rhs(node.position) == get_g_value(candidate.position) + old_cost
+          new_rhs = 1.0/0.0
+          Observation.instance.all_directions.each do |dir|
+            s_line = node.child(dir)
+            if s_line
+              n_cost = Observation.instance.direction_cost(dir)
+              n_g    = get_g_value(s_line.position)
+              if new_rhs > n_cost + n_g
+                new_rhs = n_cost + n_g
+              end
+            end
+          end
+          @rhs[node.position] = new_rhs
+        end
+        update_vertex(node)
+      end
+      #cands.each do |c|
+      #  @rhs[c.position] = nil
+      #  @g_values[c.position] = nil
+      #  @queue.delete(c.position)
+      #end
+      compute_shortest_path(final_node)
+    end
+
+    ##conferir
     direction = Observation.instance.all_directions.min_by do |dir|
       child = current_node.child(dir)
       if child
@@ -150,47 +217,9 @@ class DLite
         1.0/0.0
       end
     end
-    candidate = current_node.child(direction)
+    new_node = current_node.child(direction)
+    @start = new_node
 
-    new_node = nil
-    if Observation.instance.is_passable?(candidate.i, candidate.j)
-      new_node = candidate
-      @start = new_node
-    end
-
-    if new_node.nil?
-      @km = @km + h_value(@last, @start)
-      @last = @start
-
-      old_cost = Observation.instance.direction_cost(direction)
-      if @rhs[current_node.position] == @g_values[candidate.position] + old_cost
-        new_rhs = 1.0/0.0
-        Observation.instance.all_directions.each do |dir|
-          s_line = current_node.child(dir)
-          if s_line
-            n_cost = Observation.instance.direction_cost(dir)
-            n_g    = get_g_value(s_line.position)
-            if new_rhs > n_cost + n_g
-              new_rhs = n_cost + n_g
-            end
-          end
-        end
-        @rhs[current_node.position] = new_rhs
-      end
-      update_vertex(current_node)
-      compute_shortest_path(final_node)
-
-      direction = Observation.instance.all_directions.min_by do |dir|
-        child = current_node.child(dir)
-        if child
-          Observation.instance.direction_cost(dir) + get_g_value(child.position)
-        else
-          1.0/0.0
-        end
-      end
-      new_node = current_node.child(direction)
-    end
-
-    return new_node
+    return new_node, @test
   end
 end

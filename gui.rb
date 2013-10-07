@@ -14,7 +14,7 @@ require "./planners/tbaa.rb"
 require "./planners/flrta.rb"
 require "./planners/plrta.rb"
 require "./planners/lrta_k.rb"
-require "./planners/d_lite.rb"
+require "./planners/d_lite_simple.rb"
 require "pp"
 require "gosu"
 

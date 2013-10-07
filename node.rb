@@ -34,6 +34,19 @@ class Node
     return nil
   end
 
+  def predecessors
+    x = []
+    x << [Node.new(i-1, j), "South"] if Observation.instance.is_valid_and_passable?(i-1, j)
+    x << [Node.new(i+1, j), "North"] if Observation.instance.is_valid_and_passable?(i+1, j)
+    x << [Node.new(i, j+1), "West"] if Observation.instance.is_valid_and_passable?(i, j+1)
+    x << [Node.new(i, j-1), "East"] if Observation.instance.is_valid_and_passable?(i, j-1)
+    x << [Node.new(i-1, j+1), "Southwest"] if Observation.instance.is_valid_and_passable?(i-1, j+1) && Observation.instance.is_valid_and_passable?(i, j+1) && Observation.instance.is_valid_and_passable?(i-1, j)
+    x << [Node.new(i-1, j-1), "Southeast"] if Observation.instance.is_valid_and_passable?(i-1, j-1) && Observation.instance.is_valid_and_passable?(i-1, j) && Observation.instance.is_valid_and_passable?(i, j-1)
+    x << [Node.new(i+1, j+1), "Northwest"] if Observation.instance.is_valid_and_passable?(i+1, j+1) && Observation.instance.is_valid_and_passable?(i+1, j) && Observation.instance.is_valid_and_passable?(i, j+1)
+    x << [Node.new(i+1, j-1), "Northeast"] if Observation.instance.is_valid_and_passable?(i+1, j-1) && Observation.instance.is_valid_and_passable?(i+1, j) && Observation.instance.is_valid_and_passable?(i, j-1)
+    return x
+  end
+
   def child(direction)
     case direction
     when "North"
