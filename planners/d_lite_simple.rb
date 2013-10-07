@@ -26,7 +26,6 @@ class DLite
         @grid[h][w] = " "
       end
     end
-
   end
 
   def calculate_key(node)
@@ -76,6 +75,7 @@ class DLite
 
   def compute_shortest_path(goal)
     while first_less_than_second(@queue.min[1], calculate_key(@start)) || get_rhs(@start.position) > get_g_value(@start.position)
+      @planning_episode = true
       u, k_old = @queue.delete_min
       u_node = Node.new(u[0], u[1])
       k_new = calculate_key(u_node)
@@ -83,6 +83,7 @@ class DLite
         @queue.push u, k_new
       elsif get_g_value(u) > get_rhs(u)
         @g_values[u] = get_rhs(u)
+        @expanded_states += 1
         # Considerando predecessores = sucessores
         Observation.instance.all_directions.each do |dir|
           s = u_node.child(dir)
@@ -92,6 +93,7 @@ class DLite
         end
       else
         @g_values[u] = nil
+        @expanded_states += 1
         # Considerando predecessores = sucessores
         Observation.instance.all_directions.each do |dir|
           s = u_node.child(dir)
@@ -113,6 +115,8 @@ class DLite
   end
 
   def get_move(current_node, final_node)
+    @expanded_states = 0
+    @planning_episode = false
     compute_shortest_path(final_node) if @first_run
 
     changed = []
@@ -149,6 +153,6 @@ class DLite
     new_node = current_node.child(direction)
     @start = new_node
 
-    return new_node
+    return new_node, nil, {:planning_episode => @planning_episode, :expanded_states => @expanded_states}
   end
 end
