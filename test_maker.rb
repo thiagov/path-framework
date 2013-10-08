@@ -1,5 +1,7 @@
 #encoding: utf-8
 
+#TODO:ADD MAX TIME
+
 maps = ["arena2.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
 
 conditions = [

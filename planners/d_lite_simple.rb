@@ -76,7 +76,9 @@ class DLite
   def compute_shortest_path(goal)
     while first_less_than_second(@queue.min[1], calculate_key(@start)) || get_rhs(@start.position) > get_g_value(@start.position)
       @planning_episode = true
-      u, k_old = @queue.delete_min
+      #TODO: delete_min dando seg fault! Testar...
+      u, k_old = @queue.min
+      @queue.delete(u)
       u_node = Node.new(u[0], u[1])
       k_new = calculate_key(u_node)
       if first_less_than_second(k_old, k_new)
@@ -122,11 +124,13 @@ class DLite
     changed = []
     Observation.instance.all_directions.each do |dir|
       child = current_node.any_child(dir)
-      g = Observation.instance.grid[child.i][child.j]
-      if g != @grid[child.i][child.j] && g != '.'
-        changed.concat child.predecessors
+      if child
+        g = Observation.instance.grid[child.i][child.j]
+        if g != @grid[child.i][child.j] && g != '.'
+          changed.concat child.predecessors
+        end
+        @grid[child.i][child.j] = g
       end
-      @grid[child.i][child.j] = g
     end
     changed = [] if @first_run
     @first_run = false
