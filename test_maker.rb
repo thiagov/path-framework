@@ -3,15 +3,15 @@
 maps = ["arena2.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
 
 conditions = [
-  {:algorithm => "lrta",    :lookaheads => [[1, 0]]},
-  {:algorithm => "prta",    :lookaheads => [[1, 0]]},
-  {:algorithm => "lsslrta", :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-  {:algorithm => "rtaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-  {:algorithm => "tbaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-  {:algorithm => "lrta_k",  :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-  {:algorithm => "plrta",   :lookaheads => [[10, 10], [100, 10], [1000, 10]]},
-  {:algorithm => "tba",     :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
   {:algorithm => "d_lite",  :lookaheads => [[1, 0]]}
+# {:algorithm => "lrta",    :lookaheads => [[1, 0]]},
+# {:algorithm => "prta",    :lookaheads => [[1, 0]]},
+# {:algorithm => "lsslrta", :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
+# {:algorithm => "rtaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
+# {:algorithm => "tbaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
+# {:algorithm => "lrta_k",  :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
+# {:algorithm => "plrta",   :lookaheads => [[10, 10], [100, 10], [1000, 10]]},
+# {:algorithm => "tba",     :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
 ]
 
 test_algo = ["flatmc"]
@@ -19,7 +19,9 @@ test_algo = ["flatmc"]
 conditions.each do |condition|
   algorithm  = condition[:algorithm]
   lookaheads = condition[:lookaheads]
-  lookaheads.each do |lookahead|
+  lookaheads.each do |lookahead_tuple|
+    lookahead  = lookahead_tuple[0]
+    queue_size = lookahead_tuple[1]
     maps.each do |sf|
       File.open("results/used/#{algorithm}___#{sf.split(".")[0]}___look-#{lookahead}.csv", "w") do |outfile|
         File.open("maps/used/#{sf}.scen", "r") do |infile|
