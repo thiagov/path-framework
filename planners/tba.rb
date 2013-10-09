@@ -16,7 +16,6 @@ class Tba
     @root.depth = 0
     @root.value = 0.0
 
-    @closed_list = []
     @closed_list_hash = {}
 
     @open_list = PQueue.new{|a, b| h_value(a, final_node) + a.value < h_value(b, final_node) + b.value}
@@ -72,7 +71,6 @@ class Tba
       @open_list_hash[current_node.position] = false
       return current_node if current_node.position == final_node.position
       @closed_list_hash[current_node.position] = true
-      @closed_list << current_node
       @expanded_states += 1
       lookahead -= 1
 

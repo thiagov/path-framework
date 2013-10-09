@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require "./node.rb"
-require "priority_queue"
+require "priority_queue/ruby_priority_queue"
 
 class Plrta
 
@@ -14,7 +14,7 @@ class Plrta
       end
     end
 
-    @queue = PriorityQueue.new
+    @queue = RubyPriorityQueue.new
     @queue_max_length = queue_size > 0 ? queue_size : 39
     @num_updates = num_updates > 0 ? num_updates : 100
 

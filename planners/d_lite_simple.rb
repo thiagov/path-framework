@@ -1,14 +1,33 @@
 # encoding: utf-8
 
 require "./node.rb"
-require "priority_queue"
+require "priority_queue/ruby_priority_queue"
 
+class Array
+  def < (arr)
+    if self[0] != arr[0] && self[0] < arr[0]
+      return true
+    elsif self[0] == arr[0] && self[1] < arr[1]
+      return true
+    end
+    return false
+  end
+end
+
+# DLite usando um heap de Fibonacci como Priority Queue.
+# insert:                      O(1)
+# decrease_priority: Amortized O(1)
+# delete_min:        Amortized O(log n)
+# delete:                      O(log n)
+# has_key:                     O(1)
+#
+# Os GValues e os RHS de cada estados são armazenados em tabelas hash.
 class DLite
 
   def initialize(initial_node, goal)
     @start = initial_node
 
-    @queue = PriorityQueue.new
+    @queue = RubyPriorityQueue.new
     @km = 0
 
     @g_values = {}
@@ -76,9 +95,7 @@ class DLite
   def compute_shortest_path(goal)
     while first_less_than_second(@queue.min[1], calculate_key(@start)) || get_rhs(@start.position) > get_g_value(@start.position)
       @planning_episode = true
-      #TODO: delete_min dando seg fault! Testar...
-      u, k_old = @queue.min
-      @queue.delete(u)
+      u, k_old = @queue.delete_min
       u_node = Node.new(u[0], u[1])
       k_new = calculate_key(u_node)
       if first_less_than_second(k_old, k_new)
