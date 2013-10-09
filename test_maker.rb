@@ -1,7 +1,5 @@
 #encoding: utf-8
 
-#TODO:ADD MAX TIME
-
 maps = ["arena2.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
 
 conditions = [
@@ -16,8 +14,6 @@ conditions = [
 # {:algorithm => "tba",     :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
 ]
 
-test_algo = ["flatmc"]
-
 conditions.each do |condition|
   algorithm  = condition[:algorithm]
   lookaheads = condition[:lookaheads]
@@ -30,7 +26,7 @@ conditions.each do |condition|
           version = infile.gets
 
           cnt = 0
-          header = "Teste,Bucket,Estados expandidos,Episódios de busca,Custo da trajetória,% Sol. Ótima,Ações por Episódio de Busca,Tempo Total Busca,Tempo Médio Episódio de Busca,Tempo Médio Busca por Ação"
+          header = "Teste,Bucket,Estados expandidos,Episódios de busca,Custo da trajetória,% Sol. Ótima,Ações por Episódio de Busca,Tempo Total Busca,Tempo Médio Episódio de Busca,Tempo Médio Busca por Ação,Tempo máximo de planejamento"
           outfile.puts(header)
           while line = infile.gets
             line = line.delete("\n")
@@ -42,7 +38,7 @@ conditions.each do |condition|
             optimal = optimal.to_f
 
             result = %x[ruby main.rb #{sy} #{sx} #{gy} #{gx} #{sf} #{algorithm} #{lookahead} #{queue_size}]
-            expanded, episodes, cost, action_per_episode, total_time, episode_time, action_time = result.split("\n")
+            expanded, episodes, cost, action_per_episode, total_time, episode_time, action_time, max_planning = result.split("\n")
 
             expanded           = expanded.split(": ")[1].to_f
             episodes           = episodes.split(": ")[1].to_i
@@ -51,6 +47,7 @@ conditions.each do |condition|
             total_time         = total_time.split(": ")[1].to_f
             episode_time       = episode_time.split(": ")[1].to_f
             action_time        = action_time.split(": ")[1].to_f
+            max_planning       = max_planning.split(": ")[1].to_f
 
             cost_quality = (cost - optimal)/optimal
             cost_quality = 0.0 if cost_quality < 0.0
@@ -59,7 +56,7 @@ conditions.each do |condition|
             path_quality = (path_size - optimal)/optimal
 
             cnt += 1
-            outfile.puts("#{cnt},#{bucket},#{expanded},#{episodes},#{cost},#{cost_quality},#{action_per_episode},#{total_time},#{episode_time},#{action_time}")
+            outfile.puts("#{cnt},#{bucket},#{expanded},#{episodes},#{cost},#{cost_quality},#{action_per_episode},#{total_time},#{episode_time},#{action_time},#{max_planning}")
           end
         end
       end

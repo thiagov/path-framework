@@ -80,6 +80,7 @@ end
 # Create some variables for the planning
 medium_exec_time      = 0.0
 medium_planning_time  = 0.0
+maximum_planning_time = 0.0
 cnt_moves             = 0
 cnt_planning_episodes = 0
 cnt_expanded_states   = 0
@@ -106,6 +107,7 @@ while !current_node.equals?(goal)
   move_time             = (end_time - start_time)
   medium_exec_time     += move_time
   medium_planning_time += move_time if statistics && statistics[:planning_episode]
+  maximum_planning_time = move_time if statistics && statistics[:planning_episode] && move_time > maximum_planning_time
 
   if current_node.is_neighbour?(node_candidate) && Map.instance.is_valid?(node_candidate.i, node_candidate.j) && Map.instance.is_passable?(node_candidate.i, node_candidate.j)
     current_node = node_candidate
@@ -141,3 +143,4 @@ puts "Execuções de ação por episódio de busca (média): #{cnt_moves/cnt_pla
 puts "Tempo total de busca: #{total_end_time - total_start_time}"
 puts "Tempo de episódio de busca (média): #{medium_planning_time/cnt_planning_episodes.to_f}"
 puts "Tempo de busca por ação (média): #{medium_exec_time/cnt_moves.to_f}"
+puts "Tempo máximo de planejamento: #{maximum_planning_time}"
