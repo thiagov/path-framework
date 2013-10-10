@@ -1,17 +1,18 @@
 #encoding: utf-8
+require "pp"
 
-maps = ["arena2.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
+maps = ["combat.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
 
 conditions = [
-  {:algorithm => "d_lite",  :lookaheads => [[1, 0]]} #OK!
-# {:algorithm => "lrta",    :lookaheads => [[1, 0]]}, #OK!
-# {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
-# {:algorithm => "lsslrta", :lookaheads => [[10, 0], [100, 0], [1000, 0]]},, #OK!
-# {:algorithm => "rtaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]}, #OK
-# {:algorithm => "tbaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},, #OK!
-# {:algorithm => "lrta_k",  :lookaheads => [[10, 0], [100, 0], [1000, 0]]}, #OK!
-# {:algorithm => "plrta",   :lookaheads => [[10, 10], [100, 10], [1000, 10]]}, #OK!
-# {:algorithm => "tba",     :lookaheads => [[10, 0], [100, 0], [1000, 0]]}, #OK!
+  {:algorithm => "d_lite",  :lookaheads => [[1, 0]]}, #OK!
+  {:algorithm => "lrta",    :lookaheads => [[1, 0]]}, #OK!
+  {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
+  {:algorithm => "lsslrta", :lookaheads => [[65, 0], [115, 0], [120, 0]]}, #OK!
+  {:algorithm => "rtaa",    :lookaheads => [[500, 0], [1500, 0], [2500, 0]]}, #OK
+  {:algorithm => "tbaa",    :lookaheads => [[100, 0], [400, 0], [1000, 0]]}, #OK!
+  {:algorithm => "lrta_k",  :lookaheads => [[100, 0], [500, 0], [900, 0]]}, #OK!
+  {:algorithm => "plrta",   :lookaheads => [[100, 100], [900, 100], [1500, 100]]} #OK!
+#  {:algorithm => "tba",     :lookaheads => [[100, 0], [400, 0], [1000, 0]]} #OK!
 ]
 
 conditions.each do |condition|
@@ -60,6 +61,7 @@ conditions.each do |condition|
           end
         end
       end
+      pp "Finalizado mapa #{sf} para #{algorithm} com lookaheads #{lookahead_tuple}"
     end
   end
 end
