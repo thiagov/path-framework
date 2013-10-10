@@ -79,7 +79,6 @@ class Tbaa
     planning_episode = false
 
     next_node = nil
-
     restart_a_star(current_node, goal) if start_new_search?(goal)
 
     if !@goal_found
@@ -87,24 +86,27 @@ class Tbaa
 
       x = limited_a_star(goal, @lookahead)
       @goal_found = x if x.position == goal.position
-
-      @path = []
-      while x != nil
-        @path << x
-        x = x.parent
-        if !x.nil? && x.position == current_node.position
-          next_node = @path.pop
-          @final_path << current_node
-          break
-        end
-      end
-
-      if next_node.nil?
-        next_node = @final_path.pop
-      end
     else
-      next_node = @path.pop
-      @final_path << current_node
+      x = @goal_found
+    end
+
+    @path = []
+    while x != nil
+      @path << x
+      x = x.parent
+      if !x.nil? && x.position == current_node.position
+        restart_a_star(current_node, goal) if start_new_search?(goal)
+        next_node = @path.pop
+        @final_path << current_node
+        break
+      end
+    end
+
+    if next_node.nil?
+      next_node = @final_path.pop
+      if next_node.nil?
+        next_node = current_node
+      end
     end
 
     return next_node, @path, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
