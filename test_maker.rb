@@ -6,10 +6,10 @@ conditions = [
   {:algorithm => "d_lite",  :lookaheads => [[1, 0]]} #OK!
 # {:algorithm => "lrta",    :lookaheads => [[1, 0]]}, #OK!
 # {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
-# {:algorithm => "lsslrta", :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-# {:algorithm => "rtaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-# {:algorithm => "tbaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
-# {:algorithm => "lrta_k",  :lookaheads => [[10, 0], [100, 0], [1000, 0]]},
+# {:algorithm => "lsslrta", :lookaheads => [[10, 0], [100, 0], [1000, 0]]},, #OK!
+# {:algorithm => "rtaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]}, #OK
+# {:algorithm => "tbaa",    :lookaheads => [[10, 0], [100, 0], [1000, 0]]},, #OK!
+# {:algorithm => "lrta_k",  :lookaheads => [[10, 0], [100, 0], [1000, 0]]}, #OK!
 # {:algorithm => "plrta",   :lookaheads => [[10, 10], [100, 10], [1000, 10]]}, #OK!
 # {:algorithm => "tba",     :lookaheads => [[10, 0], [100, 0], [1000, 0]]}, #OK!
 ]
