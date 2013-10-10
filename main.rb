@@ -16,11 +16,6 @@ require "./planners/lrta_k.rb"
 require "./planners/d_lite_simple.rb"
 require "pp"
 
-#
-# TODO: ALGORITMOS QUEBRANDO QUANDO POSIÇÃO INICIAL É O OBJETIVO
-# TODO: TESTAR ARENA2
-#
-
 include Math
 
 # Get info from stdin
@@ -135,12 +130,18 @@ for i in (0..path.size-2)
   end
 end
 
+med1 = cnt_moves/cnt_planning_episodes.to_f
+med1 = med1.nan? ? 0.0 : med1
+med2 = medium_planning_time/cnt_planning_episodes.to_f
+med2 = med2.nan? ? 0.0 : med2
+med3 = medium_exec_time/cnt_moves.to_f
+med3 = med3.nan? ? 0.0 : med3
 # Print output
 puts "Estados expandidos: #{cnt_expanded_states}"
 puts "Episódios de busca: #{cnt_planning_episodes}"
 puts "Custo da trajetória: #{total_cost}"
-puts "Execuções de ação por episódio de busca (média): #{cnt_moves/cnt_planning_episodes.to_f}"
+puts "Execuções de ação por episódio de busca (média): #{med1}"
 puts "Tempo total de busca: #{total_end_time - total_start_time}"
-puts "Tempo de episódio de busca (média): #{medium_planning_time/cnt_planning_episodes.to_f}"
-puts "Tempo de busca por ação (média): #{medium_exec_time/cnt_moves.to_f}"
+puts "Tempo de episódio de busca (média): #{med2}"
+puts "Tempo de busca por ação (média): #{med3}"
 puts "Tempo máximo de planejamento: #{maximum_planning_time}"
