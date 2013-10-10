@@ -34,7 +34,6 @@ class Tbaa
     @goal_found = nil
 
     @root = Node.new(current_node.i, current_node.j)
-    @root.depth = 0
     @root.value = 0.0
 
     @open_list = PQueue.new{|a, b| h_value(a, final_node) + a.value < h_value(b, final_node) + b.value}
@@ -130,7 +129,6 @@ class Tbaa
       Observation.instance.all_directions.each do |direction|
         child = current_node.child(direction)
         if child
-          child.depth = child.parent.depth + 1
           child.value = child.parent.value + Observation.instance.direction_cost(direction)
           initialize_state(child, final_node)
           if !@open_list_hash[child.position] && !@closed_list_hash[child.position]
