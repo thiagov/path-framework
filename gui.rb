@@ -175,17 +175,18 @@ class GameWindow < Gosu::Window
         puts "#{total_cost} #{@medium_exec_time/@cnt.to_f} #{@longest_time}"
       end
 
-     # if !@one_time && @current_node.equals?(@goal)
-     #   @one_time = true
-     #   @medium_exec_time = 0.0
-     #   @longest_time     = 0.0
-     #   @cnt              = 0
-     #   @path             = []
-     #   @current_node     = @initial_node
-     #   @path << @current_node
-     #   Observation.instance.set_fields
-     #   Observation.instance.update_observation(@current_node.i, @current_node.j)
-     # end
+      if !@one_time && @current_node.equals?(@goal)
+        @one_time = true
+        @medium_exec_time = 0.0
+        @longest_time     = 0.0
+        @cnt              = 0
+        @path             = []
+        @current_node     = @initial_node
+        @path << @current_node
+        @planner.restart(@initial_node, @goal)
+        Observation.instance.set_fields
+        Observation.instance.update_observation(@current_node.i, @current_node.j)
+      end
     end
   end
 
