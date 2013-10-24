@@ -22,6 +22,11 @@ class Plrta
     @updated = []
   end
 
+  def restart(root, final_node)
+    @queue = RubyPriorityQueue.new
+    @updated = []
+  end
+
   def get_move(current_node, goal)
     @updated = []
     @expanded_states = 0

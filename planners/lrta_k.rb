@@ -16,6 +16,11 @@ class LrtaK
     @k = lookahead > 0 ? lookahead : 10
   end
 
+  def restart(root, final_node)
+    @path_hash = {}
+    @supp_hash = {}
+  end
+
   def get_move(current_node, goal)
     @expanded_states = 0
     planning_episode = true

@@ -18,6 +18,12 @@ class LssLrta
     @lookahead = lookahead > 0 ? lookahead : 100
   end
 
+  def restart(root, final_node)
+    @closed_list = []
+    @open_list   = []
+    @partial_path = []
+  end
+
   def get_move(current_node, goal)
     expanded_states  = 0
     planning_episode = false
