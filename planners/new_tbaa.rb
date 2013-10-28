@@ -41,6 +41,10 @@ class Tbaa
     initialize_search(root, final_node)
   end
 
+  # Atualiza os h-values de certo estado quando necessario. A atualização ocorre
+  # quando o estado que vai ser usado pelo novo A* já foi expandido por um A*
+  # anterior (@search[state] != @search_number) e a condição do adaptative A*
+  # é satisfeita.
   def initialize_state(node, goal)
     state = node.position
     if @search[state].nil?
@@ -54,6 +58,8 @@ class Tbaa
     @search[state] = @search_number
   end
 
+  # Recomeça o A*. A OPEN list eh resetadas, e o A* recomeça
+  # a partir do estado atual do agente.
   def initialize_search(current_node, final_node)
     @path = []
     @final_path = []
@@ -72,6 +78,9 @@ class Tbaa
     @goal_found_flag = false
   end
 
+  #
+  # Busca utilizando A*.
+  #
   def search(final_node)
     expansions = 0
     while !@open_list.empty? && expansions < @lookahead# && (@g_values[final_node.i][final_node.j] + h_value(final_node, final_node)).round(4) > (@g_values[@open_list.min_key.i][@open_list.min_key.j] + h_value(@open_list.min_key, final_node)).round(4)
@@ -154,6 +163,10 @@ class Tbaa
     return next_node, @path, {:planning_episode => true, :expanded_states => 0}
   end
 
+  #
+  # Compute the h-value. This value is the Chebyshev  distance
+  # from certain state to the goal state.
+  #
   def h_value(current, goal)
     if @grid_heuristic[current.i][current.j].nil?
       [(goal.i - current.i).abs, (goal.j - current.j).abs].max
