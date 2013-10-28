@@ -1,6 +1,17 @@
 #encoding: utf-8
 require "pp"
 
+#TODO: Teste de convergencia. Deve ser feito para:
+# d_lite  - Não aplicável?
+# lrta    - OK
+# prta    - Não aplicável
+# lsslrta - OK
+# rtaa    - OK
+# tbaa    - OK
+# lrta_k  - OK
+# plrta   - OK
+# tba     - Não aplicável?
+
 maps = ["combat.map"]#, "den009d.map", "random512-40-2.map", "maze512-32-0.map"]
 
 conditions = [
