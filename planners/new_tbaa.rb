@@ -31,10 +31,6 @@ class Tbaa
   end
 
   def restart(root, final_node)
-    #@search_number = 0
-    #@search = {}
-    #@path_cost = {}
-
     @g_values = []
     Observation.instance.grid_height.times do |h|
       @g_values[h] = []
@@ -48,12 +44,10 @@ class Tbaa
   def initialize_state(node, goal)
     state = node.position
     if @search[state].nil?
-      #@grid_heuristic[node.i][node.j] = nil
       @g_values[node.i][node.j] = 1.0/0.0
     elsif @search[state] != @search_number
       if h_value(node, goal) < @path_cost[@search[state]] - @g_values[node.i][node.j]
         @grid_heuristic[node.i][node.j] = @path_cost[@search[state]] - @g_values[node.i][node.j]
-        #puts "updating #{@grid_heuristic[node.i][node.j]}"
       end
       @g_values[node.i][node.j] = 1.0/0.0
     end
@@ -110,6 +104,7 @@ class Tbaa
       @path << x
       x = x.parent
     end
+
     return true
   end
 
@@ -117,8 +112,8 @@ class Tbaa
   def start_new_search?(current_node, goal)
     @path.each do |node|
       if !Observation.instance.is_passable?(node.i, node.j)
+        @grid_heuristic[node.i][node.j] = 1.0/0.0
         best = @open_list.min[0]
-        #best = @goal_found if @goal_found
         @path_cost[@search_number] = h_value(best, goal) + @g_values[best.i][best.j]
         initialize_search(current_node, goal)
         @path = []
