@@ -98,6 +98,7 @@ class Tbaa
         end
       end
       expansions += 1
+      @expanded_states += 1
     end
     if @open_list.empty?
       return false
@@ -131,8 +132,12 @@ class Tbaa
   end
 
   def get_move(current_node, goal)
+    @expanded_states = 0
+    planning_episode = false
+
     start_new_search?(current_node, goal)
     if !@goal_found_flag
+      planning_episode = true
       search(goal)
       start_new_search?(current_node, goal)
     end
@@ -160,7 +165,7 @@ class Tbaa
 
     @path_cost[@search_number] = h_value(next_node, goal) + @g_values[next_node.i][next_node.j] if next_node.equals?(goal)
 
-    return next_node, @path, {:planning_episode => true, :expanded_states => 0}
+    return next_node, @path, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
   end
 
   #

@@ -20,7 +20,7 @@ conditions = [
   {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
   {:algorithm => "lsslrta", :lookaheads => [[65, 0], [115, 0], [120, 0]]}, #OK!
   {:algorithm => "rtaa",    :lookaheads => [[500, 0], [1500, 0], [2500, 0]]}, #OK
-  {:algorithm => "tbaa",    :lookaheads => [[100, 0], [400, 0], [1000, 0]]}, #OK!
+  {:algorithm => "tbaa",    :lookaheads => [[100, 0], [1200, 0], [2100, 0]]}, #OK!
   {:algorithm => "lrta_k",  :lookaheads => [[100, 0], [500, 0], [900, 0]]}, #OK!
   {:algorithm => "plrta",   :lookaheads => [[100, 100], [900, 100], [1500, 100]]} #OK!
 #  {:algorithm => "tba",     :lookaheads => [[100, 0], [400, 0], [1000, 0]]} #OK!
