@@ -88,6 +88,8 @@ path << current_node
 Observation.instance.update_observation(current_node.i, current_node.j)
 
 total_start_time = Time.now
+
+all_planning_times = []
 # Find path
 while !current_node.equals?(goal)
   start_time = Time.now
@@ -105,6 +107,11 @@ while !current_node.equals?(goal)
   medium_planning_time += move_time if statistics && statistics[:planning_episode]
   maximum_planning_time = move_time if statistics && statistics[:planning_episode] && move_time > maximum_planning_time
 
+  ###
+  #puts move_time if statistics && statistics[:planning_episode]
+  all_planning_times << move_time if statistics && statistics[:planning_episode]
+  ###
+
   if current_node.is_neighbour?(node_candidate) && Map.instance.is_valid?(node_candidate.i, node_candidate.j) && Map.instance.is_passable?(node_candidate.i, node_candidate.j)
     current_node = node_candidate
   else
@@ -116,6 +123,11 @@ while !current_node.equals?(goal)
   Observation.instance.update_observation(current_node.i, current_node.j)
 end
 total_end_time = Time.now
+
+all_planning_times.sort
+mediana = all_planning_times.size/2
+noventa = (all_planning_times.size*0.9).floor
+puts all_planning_times[noventa]
 
 # Get path cost
 total_cost = 0.0
