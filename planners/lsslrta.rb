@@ -118,7 +118,11 @@ class LssLrta
           end
         end
       end
-      return {:node => current_node, :num_expanded => num_expanded, :expanded => expanded, :frontier => frontier} if lookahead == 0
+      if lookahead == 0
+        #puts "="
+        #puts "Lookahead 0"
+        return {:node => current_node, :num_expanded => num_expanded, :expanded => expanded, :frontier => frontier}
+      end
     end
   end
 
@@ -137,18 +141,23 @@ class LssLrta
     # usefull to make comparisons between positions more efficiently. Furthermore,
     # all positions in the search space will have the h-value set to infinity.
     remade_closed_list = []
+    remade_closed_list_hash = {}
     closed_list.each do |node|
       remade_closed_list << node.position
+      remade_closed_list_hash[node.position] = true
       @grid_heuristic[node.i][node.j] = 1.0/0.0
     end
 
     while !remade_closed_list.empty?
       s = remade_open_list.pop
-      remade_closed_list.delete(s.position) if remade_closed_list.include?(s.position)
+      if remade_closed_list_hash[s.position]
+        remade_closed_list.delete(s.position)
+        remade_closed_list_hash[s.position] = false
+      end
       Observation.instance.all_directions.each do |direction|
         child = s.child(direction)
         if child
-          if remade_closed_list.include?(child.position) && h_value(child, final_node) > (h_value(s, final_node) + Observation.instance.direction_cost(direction))
+          if remade_closed_list_hash[child.position] && h_value(child, final_node) > (h_value(s, final_node) + Observation.instance.direction_cost(direction))
             @grid_heuristic[child.i][child.j] = h_value(s, final_node) + Observation.instance.direction_cost(direction)
             remade_open_list.push(child)
           end
