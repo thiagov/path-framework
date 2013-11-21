@@ -12,18 +12,18 @@ require "pp"
 # plrta   - OK
 # tba     - Não aplicável?
 
-maps = ["arena2.map", "lak503d.map", "den020d.map"]
+maps = ["combat.map", "lak503d.map", "arena2.map", "duskwood.map"]
 
 conditions = [
-#  {:algorithm => "d_lite",  :lookaheads => [[1, 0]]}, #OK!
-#  {:algorithm => "lrta",    :lookaheads => [[1, 0]]}, #OK!
-#  {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
-#  {:algorithm => "lsslrta", :lookaheads => [[65, 0], [115, 0], [120, 0]]}, #OK!
-#  {:algorithm => "rtaa",    :lookaheads => [[500, 0], [1500, 0], [2500, 0]]}, #OK
-#  {:algorithm => "tbaa",    :lookaheads => [[100, 0], [1200, 0], [2100, 0]]}, #OK!
-#  {:algorithm => "lrta_k",  :lookaheads => [[100, 0], [500, 0], [900, 0]]}, #OK!
-  {:algorithm => "plrta",   :lookaheads => [[100, 100], [900, 100], [1500, 100]]} #OK!
-#  {:algorithm => "tba",     :lookaheads => [[100, 0], [400, 0], [1000, 0]]} #OK!
+  {:algorithm => "d_lite",  :lookaheads => [[1, 0]]}, #OK!
+  {:algorithm => "lrta",    :lookaheads => [[1, 0]]}, #OK!
+  {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
+  {:algorithm => "lsslrta", :lookaheads => [[90, 0], [150, 0], [230, 0], [310, 0]]}, #OK!
+  {:algorithm => "rtaa",    :lookaheads => [[180, 0], [450, 0], [800, 0], [1100, 0]]}, #OK
+  {:algorithm => "tbaa",    :lookaheads => [[180, 0], [420, 0], [660, 0], [880, 0]]}, #OK!
+  {:algorithm => "lrta_k",  :lookaheads => [[10000, 0]]}, #OK!
+  {:algorithm => "plrta",   :lookaheads => [[140, 100], [270, 100], [480, 100], [700, 100]]} #OK!
+#  {:algorithm => "tba",     :lookaheads => [[230, 0], [450, 0], [800, 0], [1100, 0]} #OK!
 ]
 
 conditions.each do |condition|
@@ -38,7 +38,7 @@ conditions.each do |condition|
           version = infile.gets
 
           cnt = 0
-          header = "Teste,Bucket,Estados expandidos,Episódios de busca,Custo da trajetória,% Sol. Ótima,Ações por Episódio de Busca,Tempo Total Busca,Tempo Médio Episódio de Busca,Tempo Médio Busca por Ação,Tempo máximo de planejamento"
+          header = "Teste,Bucket,Estados expandidos,Episódios de busca,Custo da trajetória,% Sol. Ótima,Ações por Episódio de Busca,Tempo Total Busca,Tempo Médio Episódio de Busca,Tempo Médio Busca por Ação,Tempo máximo de planejamento,Fifty,Ninety"
           outfile.puts(header)
           while line = infile.gets
             line = line.delete("\n")
@@ -50,7 +50,7 @@ conditions.each do |condition|
             optimal = optimal.to_f
 
             result = %x[ruby main.rb #{sy} #{sx} #{gy} #{gx} #{sf} #{algorithm} #{lookahead} #{queue_size}]
-            expanded, episodes, cost, action_per_episode, total_time, episode_time, action_time, max_planning = result.split("\n")
+            expanded, episodes, cost, action_per_episode, total_time, episode_time, action_time, max_planning, fifty, ninety = result.split("\n")
 
             expanded           = expanded.split(": ")[1].to_f
             episodes           = episodes.split(": ")[1].to_i
@@ -60,6 +60,8 @@ conditions.each do |condition|
             episode_time       = episode_time.split(": ")[1].to_f
             action_time        = action_time.split(": ")[1].to_f
             max_planning       = max_planning.split(": ")[1].to_f
+            fifty              = fifty.split(": ")[1].to_f
+            ninety             = ninety.split(": ")[1].to_f
 
             cost_quality = (cost - optimal)/optimal
             cost_quality = 0.0 if cost_quality < 0.0
@@ -68,7 +70,7 @@ conditions.each do |condition|
             path_quality = (path_size - optimal)/optimal
 
             cnt += 1
-            outfile.puts("#{cnt},#{bucket},#{expanded},#{episodes},#{cost},#{cost_quality},#{action_per_episode},#{total_time},#{episode_time},#{action_time},#{max_planning}")
+            outfile.puts("#{cnt},#{bucket},#{expanded},#{episodes},#{cost},#{cost_quality},#{action_per_episode},#{total_time},#{episode_time},#{action_time},#{max_planning},#{fifty},#{ninety}")
           end
         end
       end

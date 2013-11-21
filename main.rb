@@ -127,9 +127,6 @@ total_end_time = Time.now
 all_planning_times = all_planning_times.sort
 mediana = all_planning_times.size/2
 noventa = (all_planning_times.size*0.9).floor
-puts "90%: #{all_planning_times[noventa]}"
-puts "50%: #{all_planning_times[mediana]}"
-puts "Last: #{all_planning_times.last}"
 
 # Get path cost
 total_cost = 0.0
@@ -160,3 +157,5 @@ puts "Tempo total de busca: #{total_end_time - total_start_time}"
 puts "Tempo de episódio de busca (média): #{med2}"
 puts "Tempo de busca por ação (média): #{med3}"
 puts "Tempo máximo de planejamento: #{maximum_planning_time}"
+puts "50%: #{all_planning_times[mediana]}"
+puts "90%: #{all_planning_times[noventa]}"
