@@ -42,7 +42,7 @@ conditions.each do |condition|
           outfile.puts(header)
           while line = infile.gets
             line = line.delete("\n")
-            bucket, map, width, height, sx, sy, gx, gy, optimal = line.split(/\t/)
+            bucket, map, width, height, sx, sy, gx, gy, optimal = line.split(/\s/)
             sx = sx.to_i
             sy = sy.to_i
             gx = gx.to_i
