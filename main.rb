@@ -91,7 +91,7 @@ total_start_time = Time.now
 
 all_planning_times = []
 # Find path
-while !current_node.equals?(goal)
+while !current_node.equals?(goal) && Map.instance.is_passable?(goal.i, goal.j)
   start_time = Time.now
 
   node_candidate, special, statistics = planner.get_move(current_node, goal)
@@ -157,5 +157,5 @@ puts "Tempo total de busca: #{total_end_time - total_start_time}"
 puts "Tempo de episódio de busca (média): #{med2}"
 puts "Tempo de busca por ação (média): #{med3}"
 puts "Tempo máximo de planejamento: #{maximum_planning_time}"
-puts "50%: #{all_planning_times[mediana]}"
-puts "90%: #{all_planning_times[noventa]}"
+puts "50%: #{all_planning_times[mediana] || 0.0}"
+puts "90%: #{all_planning_times[noventa] || 0.0}"
