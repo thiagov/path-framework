@@ -91,7 +91,7 @@ total_start_time = Time.now
 
 all_planning_times = []
 # Find path
-while !current_node.equals?(goal) && Map.instance.is_passable?(goal.i, goal.j)
+while !current_node.equals?(goal) && Map.instance.is_passable?(goal.i, goal.j) && Map.instance.is_passable?(current_node.i, current_node.j)
   start_time = Time.now
 
   node_candidate, special, statistics = planner.get_move(current_node, goal)
