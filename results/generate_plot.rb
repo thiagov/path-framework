@@ -25,6 +25,5 @@ lrta_k  = "\"#{dir}/buckets_lrta_k___#{map}___look-10000.dat\" using 1:#{column}
 plrta   = "\"#{dir}/buckets_plrta___#{map}___look-#{look_hash["plrta"][look][0]}.dat\" using 1:#{column} smooth bezier title \"Plrta\""
 tba     = "\"#{dir}/buckets_tba___#{map}___look-#{look_hash["tba"][look][0]}.dat\" using 1:#{column} smooth bezier title \"Tba\""
 
-puts "plot #{lsslrta}, #{rtaa}, #{tbaa}, #{plrta}"
-
-#plot "buckets/buckets_lsslrta___arena2___look-90.dat" using 1:5 smooth bezier title "LssLrta"
+#put "plot #{d_lite}, #{lrta}, #{prta}, #{lsslrta}, #{rtaa}, #{tbaa}, #{lrta_k}, #{plrta}, #{tba}"
+puts "plot #{d_lite}, #{prta}, #{lsslrta}, #{rtaa}, #{tbaa}, #{lrta_k}, #{plrta}"

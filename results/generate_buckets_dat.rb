@@ -7,7 +7,7 @@ Dir.foreach(dir) do |infile|
   outfile = "buckets_#{outfile}"
 
   File.open("#{dir}/#{infile}", "r") do |i_file|
-    File.open("#{dir}/dats//buckets/#{outfile}", "w") do |o_file|
+    File.open("#{dir}/dats/buckets/#{outfile}", "w") do |o_file|
       line = i_file.gets
       g_b = -1
       cnt = 0
