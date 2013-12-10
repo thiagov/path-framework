@@ -12,7 +12,7 @@ require "pp"
 # plrta   - OK
 # tba     - Não aplicável?
 
-maps = ["combat.map", "lak503d.map", "arena2.map", "duskwood.map"]
+maps = ["hrt201n.map", "duskwood.map"]#"combat.map", "lak503d.map", "arena2.map", "duskwood.map"]
 
 conditions = [
   {:algorithm => "d_lite",  :lookaheads => [[1, 0]]}, #OK!
