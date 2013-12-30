@@ -90,6 +90,7 @@ Observation.instance.update_observation(current_node.i, current_node.j)
 total_start_time = Time.now
 
 all_planning_times = []
+result_found = true
 # Find path
 while !current_node.equals?(goal) && Map.instance.is_passable?(goal.i, goal.j) && Map.instance.is_passable?(current_node.i, current_node.j)
   start_time = Time.now
@@ -121,41 +122,51 @@ while !current_node.equals?(goal) && Map.instance.is_passable?(goal.i, goal.j) &
 
   path << current_node
   Observation.instance.update_observation(current_node.i, current_node.j)
+
+  if (end_time - total_start_time) > 10800
+    result_found = false
+    break
+  end
 end
 total_end_time = Time.now
 
-all_planning_times = all_planning_times.sort
-mediana = all_planning_times.size/2
-noventa = (all_planning_times.size*0.9).floor
+if result_found
 
-# Get path cost
-total_cost = 0.0
-for i in (0..path.size-2)
-  node1 = path[i]
-  node2 = path[i+1]
-  sum = (node1.i - node2.i).abs + (node1.j - node2.j).abs
+  all_planning_times = all_planning_times.sort
+  mediana = all_planning_times.size/2
+  noventa = (all_planning_times.size*0.9).floor
 
-  if sum%2 == 0
-    total_cost += 1.41421
-  else
-    total_cost += 1.0
+  # Get path cost
+  total_cost = 0.0
+  for i in (0..path.size-2)
+    node1 = path[i]
+    node2 = path[i+1]
+    sum = (node1.i - node2.i).abs + (node1.j - node2.j).abs
+
+    if sum%2 == 0
+      total_cost += 1.41421
+    else
+      total_cost += 1.0
+    end
   end
-end
 
-med1 = cnt_moves/cnt_planning_episodes.to_f
-med1 = med1.nan? ? 0.0 : med1
-med2 = medium_planning_time/cnt_planning_episodes.to_f
-med2 = med2.nan? ? 0.0 : med2
-med3 = medium_exec_time/cnt_moves.to_f
-med3 = med3.nan? ? 0.0 : med3
-# Print output
-puts "Estados expandidos: #{cnt_expanded_states}"
-puts "Episódios de busca: #{cnt_planning_episodes}"
-puts "Custo da trajetória: #{total_cost}"
-puts "Execuções de ação por episódio de busca (média): #{med1}"
-puts "Tempo total de busca: #{total_end_time - total_start_time}"
-puts "Tempo de episódio de busca (média): #{med2}"
-puts "Tempo de busca por ação (média): #{med3}"
-puts "Tempo máximo de planejamento: #{maximum_planning_time}"
-puts "50%: #{all_planning_times[mediana] || 0.0}"
-puts "90%: #{all_planning_times[noventa] || 0.0}"
+  med1 = cnt_moves/cnt_planning_episodes.to_f
+  med1 = med1.nan? ? 0.0 : med1
+  med2 = medium_planning_time/cnt_planning_episodes.to_f
+  med2 = med2.nan? ? 0.0 : med2
+  med3 = medium_exec_time/cnt_moves.to_f
+  med3 = med3.nan? ? 0.0 : med3
+  # Print output
+  puts "Estados expandidos: #{cnt_expanded_states}"
+  puts "Episódios de busca: #{cnt_planning_episodes}"
+  puts "Custo da trajetória: #{total_cost}"
+  puts "Execuções de ação por episódio de busca (média): #{med1}"
+  puts "Tempo total de busca: #{total_end_time - total_start_time}"
+  puts "Tempo de episódio de busca (média): #{med2}"
+  puts "Tempo de busca por ação (média): #{med3}"
+  puts "Tempo máximo de planejamento: #{maximum_planning_time}"
+  puts "50%: #{all_planning_times[mediana] || 0.0}"
+  puts "90%: #{all_planning_times[noventa] || 0.0}"
+else
+  puts "------------ Resultado nao foi encontrado em 2 horas! -------------"
+end
