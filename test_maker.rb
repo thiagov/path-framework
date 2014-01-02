@@ -52,22 +52,24 @@ conditions.each do |condition|
             result = %x[ruby main.rb #{sy} #{sx} #{gy} #{gx} #{sf} #{algorithm} #{lookahead} #{queue_size}]
             expanded, episodes, cost, action_per_episode, total_time, episode_time, action_time, max_planning, fifty, ninety = result.split("\n")
 
-            expanded           = expanded.split(": ")[1].to_f
-            episodes           = episodes.split(": ")[1].to_i
-            cost               = cost.split(": ")[1].to_f
-            action_per_episode = action_per_episode.split(": ")[1].to_f
-            total_time         = total_time.split(": ")[1].to_f
-            episode_time       = episode_time.split(": ")[1].to_f
-            action_time        = action_time.split(": ")[1].to_f
-            max_planning       = max_planning.split(": ")[1].to_f
-            fifty              = fifty.split(": ")[1].to_f
-            ninety             = ninety.split(": ")[1].to_f
+            if expanded.nil?
+              expanded           = expanded.split(": ")[1].to_f
+              episodes           = episodes.split(": ")[1].to_i
+              cost               = cost.split(": ")[1].to_f
+              action_per_episode = action_per_episode.split(": ")[1].to_f
+              total_time         = total_time.split(": ")[1].to_f
+              episode_time       = episode_time.split(": ")[1].to_f
+              action_time        = action_time.split(": ")[1].to_f
+              max_planning       = max_planning.split(": ")[1].to_f
+              fifty              = fifty.split(": ")[1].to_f
+              ninety             = ninety.split(": ")[1].to_f
 
-            cost_quality = (cost - optimal)/optimal
-            cost_quality = 0.0 if cost_quality < 0.0
+              cost_quality = (cost - optimal)/optimal
+              cost_quality = 0.0 if cost_quality < 0.0
 
-            path_size    = path_size.to_f
-            path_quality = (path_size - optimal)/optimal
+              path_size    = path_size.to_f
+              path_quality = (path_size - optimal)/optimal
+            end
 
             cnt += 1
             outfile.puts("#{cnt},#{bucket},#{expanded},#{episodes},#{cost},#{cost_quality},#{action_per_episode},#{total_time},#{episode_time},#{action_time},#{max_planning},#{fifty},#{ninety}")
