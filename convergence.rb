@@ -123,6 +123,8 @@ while (changed_heuristics)
     end
   end
   final_cost = total_cost
+  #puts "#{num_solves} - #{final_cost}"
+  #puts "="*20
 
   # Updates changed_heuristics
   if (previous_path != [] && same_path?(previous_path, path)) || path.size == 1
@@ -135,6 +137,11 @@ while (changed_heuristics)
     path << current_node
     Observation.instance.set_fields
     Observation.instance.update_observation(current_node.i, current_node.j)
+  end
+
+  if num_solves > 1000
+    puts "Não consegui convergir..."
+    exit
   end
 end
 end_time = Time.now

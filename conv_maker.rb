@@ -19,12 +19,13 @@ conditions = [
 #  {:algorithm => "d_lite",  :lookaheads => [[1, 0]]}, #OK!
 #  {:algorithm => "prta",    :lookaheads => [[1, 0]]}, #OK!
 #  {:algorithm => "tba",     :lookaheads => [[230, 0], [450, 0], [800, 0], [1100, 0]} #OK!
+
   {:algorithm => "lrta",    :lookaheads => [[1, 0]]}, #OK!
-  {:algorithm => "lsslrta", :lookaheads => [[90, 0], [150, 0], [230, 0], [310, 0]]}, #OK!
-  {:algorithm => "rtaa",    :lookaheads => [[180, 0], [450, 0], [800, 0], [1100, 0]]}, #OK
   {:algorithm => "tbaa",    :lookaheads => [[180, 0], [420, 0], [660, 0], [880, 0]]}, #OK!
   {:algorithm => "lrta_k",  :lookaheads => [[10000, 0]]}, #OK!
-  {:algorithm => "plrta",   :lookaheads => [[140, 100], [270, 100], [480, 100], [700, 100]]} #OK!
+  {:algorithm => "plrta",   :lookaheads => [[140, 100], [270, 100], [480, 100], [700, 100]]}, #OK!
+  {:algorithm => "rtaa",    :lookaheads => [[1100, 0]]}, #OK
+  {:algorithm => "lsslrta", :lookaheads => [[90, 0], [150, 0], [230, 0], [310, 0]]} #OK!
 ]
 
 begin
@@ -54,10 +55,11 @@ begin
               result = %x[ruby convergence.rb #{sy} #{sx} #{gy} #{gx} #{sf} #{algorithm} #{lookahead} #{queue_size}]
               total_solves, total_time, final_cost = result.split("\n")
 
-              total_solves = total_solves.split(": ")[1].to_f
-              total_time   = total_time.split(": ")[1].to_f
-              final_cost   = final_cost.split(": ")[1].to_f
-
+              if !total_time.nil?
+                total_solves = total_solves.split(": ")[1].to_f
+                total_time   = total_time.split(": ")[1].to_f
+                final_cost   = final_cost.split(": ")[1].to_f
+              end
 
               cnt += 1
               outfile.puts("#{cnt},#{bucket},#{total_solves},#{total_time},#{final_cost}")
