@@ -125,7 +125,7 @@ while (changed_heuristics)
   final_cost = total_cost
 
   # Updates changed_heuristics
-  if previous_path != [] && same_path?(previous_path, path)
+  if (previous_path != [] && same_path?(previous_path, path)) || path.size == 1
     changed_heuristics = false
   else
     planner.restart(initial_node, goal)
