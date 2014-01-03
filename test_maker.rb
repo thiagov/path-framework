@@ -54,7 +54,7 @@ conditions.each do |condition|
             result = %x[ruby main.rb #{sy} #{sx} #{gy} #{gx} #{sf} #{algorithm} #{lookahead} #{queue_size}]
             expanded, episodes, cost, action_per_episode, total_time, episode_time, action_time, max_planning, fifty, ninety = result.split("\n")
 
-            if expanded.nil?
+            if !episodes.nil?
               expanded           = expanded.split(": ")[1].to_f
               episodes           = episodes.split(": ")[1].to_i
               cost               = cost.split(": ")[1].to_f
