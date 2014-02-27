@@ -15,7 +15,7 @@ class Observation
   attr_accessor :grid
 
   def set_fields
-    @visibility = 10
+    @visibility = 2
 
     @grid_width = Map.instance.grid_width
     @grid_height = Map.instance.grid_height

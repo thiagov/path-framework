@@ -21,68 +21,92 @@ require "gosu"
 include Math
 
 # Get info from stdin
-init_i     = ARGV[0].to_i
-init_j     = ARGV[1].to_i
-end_i      = ARGV[2].to_i
-end_j      = ARGV[3].to_i
+#init_i     = ARGV[0].to_i
+#init_j     = ARGV[1].to_i
+#end_i      = ARGV[2].to_i
+#end_j      = ARGV[3].to_i
 map_name   = ARGV[4]
 algorithm  = ARGV[5]
 lookahead  = ARGV[6].to_i
 queue_size = ARGV[7].to_i
+
 
 # Initialize map and observation
 Map.instance.read_map(map_name)
 Observation.instance.set_fields
 #Observation.instance.view_all_map #Uncomment this line to have full observability
 
+#initial_nodes = [Node.new(7, 46)]#, Node.new(27, 10), Node.new(10, 26)]
+#goal_nodes    = [Node.new(5, 68)]#, Node.new(15, 61), Node.new(13, 32)]
+
+#teste5.map
+initial_nodes = [Node.new(10, 29)]
+goal_nodes    = [Node.new(10, 31)]
+
+#teste8.map
+#initial_nodes = [Node.new(10, 29)]
+#goal_nodes    = [Node.new(10, 48)]
+
+#
 # Initialize start and goal nodes
-initial_node = Node.new(init_i, init_j)
-goal = Node.new(end_i, end_j)
+#initial_node = Node.new(init_i, init_j)
+#goal = Node.new(end_i, end_j)
+
+initial_node = initial_nodes.pop
+goal         = goal_nodes.pop
 
 # Set planner
 planner = nil
-case algorithm
-# A* needs full observability to work!
-when "a_star"
-  planner = AStar.new
-when "lrta"
-  planner = Lrta.new
-when "prta"
-  planner = Prta.new(initial_node)
-when "lsslrta"
-  planner = LssLrta.new(lookahead)
-when "rtaa"
-  planner = Rtaa.new(lookahead)
-when "extendedprta"
-  planner = ExtendedPrta.new(initial_node)
-when "mcts"
-  planner = Mcts.new(initial_node)
-when "flatmc"
-  planner = FlatMC.new(initial_node)
-when "tba"
-  planner = Tba.new(initial_node, goal, lookahead)
-when "rtba"
-  planner = Rtba.new(initial_node, goal)
-when "tbaa"
-  planner = Tbaa.new(initial_node, goal, lookahead)
-when "flrta"
-  planner = Flrta.new(initial_node)
-when "plrta"
-  planner = Plrta.new(queue_size, lookahead)
-when "lrta_k"
-  planner = LrtaK.new(lookahead)
-when "d_lite"
-  planner = DLite.new(initial_node, goal)
+
+def set_planner(algorithm, initial_node, lookahead, goal, queue_size)
+  case algorithm
+  # A* needs full observability to work!
+  when "a_star"
+    planner = AStar.new
+  when "lrta"
+    planner = Lrta.new
+  when "prta"
+    planner = Prta.new(initial_node)
+  when "lsslrta"
+    planner = LssLrta.new(lookahead)
+  when "rtaa"
+    planner = Rtaa.new(lookahead)
+  when "extendedprta"
+    planner = ExtendedPrta.new(initial_node)
+  when "mcts"
+    planner = Mcts.new(initial_node)
+  when "flatmc"
+    planner = FlatMC.new(initial_node)
+  when "tba"
+    planner = Tba.new(initial_node, goal, lookahead)
+  when "rtba"
+    planner = Rtba.new(initial_node, goal)
+  when "tbaa"
+    planner = Tbaa.new(initial_node, goal, lookahead)
+  when "flrta"
+    planner = Flrta.new(initial_node)
+  when "plrta"
+    planner = Plrta.new(queue_size, lookahead)
+  when "lrta_k"
+    planner = LrtaK.new(lookahead)
+  when "d_lite"
+    planner = DLite.new(initial_node, goal)
+  end
+  return planner
 end
 
+
+planner = set_planner(algorithm, initial_node, lookahead, goal, queue_size)
+
 class GameWindow < Gosu::Window
-  def initialize(algorithm, initial_node, goal, planner)
+
+  def initialize(algorithm, initial_node, goal, planner, lookahead, queue_size, initial_nodes, goal_nodes)
     @one_time = true
     @offset = 20
     @pause = true
 
     # Initialize windows
-    super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false, 1000/60
+    super Map.instance.grid_width*@offset, Map.instance.grid_height*@offset, false, 1000/10
     self.caption = "#{algorithm}"
 
     # Colors used on map
@@ -107,6 +131,13 @@ class GameWindow < Gosu::Window
     @cnt              = 0
     @path             = []
     @current_node     = initial_node
+
+    #So para video
+    @lookahead        = lookahead
+    @queue_size       = queue_size
+    @initial_nodes    = initial_nodes
+    @goal_nodes       = goal_nodes
+    @algorithm        = algorithm
 
     # Variable used to additional drawing
     @special = []
@@ -181,11 +212,16 @@ class GameWindow < Gosu::Window
         @longest_time     = 0.0
         @cnt              = 0
         @path             = []
+        @initial_node     = @initial_nodes.pop
+        @goal             = @goal_nodes.pop
         @current_node     = @initial_node
         @path << @current_node
-        @planner.restart(@initial_node, @goal)
+        #@planner.restart(@initial_node, @goal)
+        @special = []
+        @planner = set_planner(@algorithm, @initial_node, @lookahead, @goal, @queue_size)
         Observation.instance.set_fields
         Observation.instance.update_observation(@current_node.i, @current_node.j)
+        @pause = true
       end
     end
   end
@@ -238,5 +274,5 @@ class GameWindow < Gosu::Window
   end
 end
 
-window = GameWindow.new(algorithm, initial_node, goal, planner)
+window = GameWindow.new(algorithm, initial_node, goal, planner, lookahead, queue_size, initial_nodes, goal_nodes)
 window.show
