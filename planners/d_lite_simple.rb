@@ -25,6 +25,8 @@ end
 class DLite
 
   def initialize(initial_node, goal)
+    @goal = goal #usasa somente na get_path!
+
     @start = initial_node
 
     @queue = RubyPriorityQueue.new
@@ -174,6 +176,26 @@ class DLite
     new_node = current_node.child(direction)
     @start = new_node
 
-    return new_node, nil, {:planning_episode => @planning_episode, :expanded_states => @expanded_states}
+    get_path(current_node) #usada somente para calcular o partial path. Pode ser retirada!
+
+    return new_node, @partial_path, {:planning_episode => @planning_episode, :expanded_states => @expanded_states}
+  end
+
+  def get_path(current_node)
+    @partial_path = []
+    x = current_node
+    while (!x.equals?(@goal)) do
+      direction = Observation.instance.all_directions.min_by do |dir|
+        child = x.child(dir)
+        if child
+          Observation.instance.direction_cost(dir) + get_g_value(child.position)
+        else
+          1.0/0.0
+        end
+      end
+      new_node = x.child(direction)
+      @partial_path << new_node
+      x = new_node
+    end
   end
 end

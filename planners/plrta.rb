@@ -19,16 +19,16 @@ class Plrta
     @num_updates = num_updates > 0 ? num_updates : 100
 
     # Usada somente para imprimir na tela
-    #@updated = []
+    @updated = []
   end
 
   def restart(root, final_node)
     @queue = RubyPriorityQueue.new
-    #@updated = []
+    @updated = []
   end
 
   def get_move(current_node, goal)
-    #@updated = []
+    @updated = []
     @expanded_states = 0
     planning_episode = true
 
@@ -53,7 +53,7 @@ class Plrta
     end
     next_node = neighbours.min_by{|el| el[:h]}[:node]
 
-    return next_node, nil, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
+    return next_node, @updated, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
   end
 
   def state_update(node_pos, goal)
@@ -74,7 +74,7 @@ class Plrta
     @expanded_states += 1
 
     if delta > 0
-      #@updated << node
+      @updated << node
       @grid_heuristic[node.i][node.j] = selected[:h]
       neighbours.each do |el|
         add_to_queue(el[:node], delta)

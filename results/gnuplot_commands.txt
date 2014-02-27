@@ -1,0 +1,151 @@
+-- Old --
+
+dx=2.
+n=7
+total_box_width_relative=0.4
+gap_width_relative=0.1
+d_width=(gap_width_relative+total_box_width_relative)*dx/2.
+
+set grid
+set boxwidth total_box_width_relative/n relative
+set style fill solid noborder
+set key left top
+set xtics 5
+-------------
+
+
+
+set grid
+set key autotitle columnheader
+set key left box
+
+set style data histogram
+set style histogram cluster gap 4
+set style fill solid border -1
+set boxwidth 1
+
+set style fill solid noborder
+
+set yrange [0:*]
+
+set style fill pattern border -1
+set term post mono solid
+set output "teste.ps"
+
+-- Mapas x Qualidade da Solução - Comparando algoritmos --
+
+set yrange [0:3000]
+set ylabel "Custo extra da solução (%)"
+set xlabel "Mapas"
+plot "visibility10-look4-porcentagem_sol_otima.dat" using ($2*100):xticlabel(1) linecolor rgb "#F20000", "visibility10-look4-porcentagem_sol_otima.dat" using ($4*100):xticlabel(1) linecolor rgb "#F200EB", "visibility10-look4-porcentagem_sol_otima.dat" using ($5*100):xticlabel(1) linecolor rgb "#2100F2", "visibility10-look4-porcentagem_sol_otima.dat" using ($3*100):xticlabel(1) linecolor rgb "#0081F2", "visibility10-look4-porcentagem_sol_otima.dat" using ($7*100):xticlabel(1) linecolor rgb "#00E3F2", "visibility10-look4-porcentagem_sol_otima.dat" using ($8*100):xticlabel(1) linecolor rgb "#00F221", "visibility10-look4-porcentagem_sol_otima.dat" using ($9*100):xticlabel(1) linecolor rgb "#B5F200", "visibility10-look4-porcentagem_sol_otima.dat" using ($6*100):xticlabel(1) linecolor rgb "#F28E00"
+
+-- Mapas x Qualidade da Solução em Proporção- Comparando algoritmos --
+
+set yrange [0:30]
+set ylabel "Custo extra da solução"
+set xlabel "Mapas"
+plot "visibility10-look4-porcentagem_sol_otima.dat" using ($2+1):xticlabel(1) linecolor rgb "#F20000", "visibility10-look4-porcentagem_sol_otima.dat" using ($4+1):xticlabel(1) linecolor rgb "#F200EB", "visibility10-look4-porcentagem_sol_otima.dat" using ($5+1):xticlabel(1) linecolor rgb "#2100F2", "visibility10-look4-porcentagem_sol_otima.dat" using ($3+1):xticlabel(1) linecolor rgb "#0081F2", "visibility10-look4-porcentagem_sol_otima.dat" using ($7+1):xticlabel(1) linecolor rgb "#00E3F2", "visibility10-look4-porcentagem_sol_otima.dat" using ($8+1):xticlabel(1) linecolor rgb "#00F221", "visibility10-look4-porcentagem_sol_otima.dat" using ($9+1):xticlabel(1) linecolor rgb "#B5F200", "visibility10-look4-porcentagem_sol_otima.dat" using ($6+1):xticlabel(1) linecolor rgb "#F28E00"
+
+-- Visibilidade x Qualidade da Solução em Proporção para mesmo mapa --
+
+set yrange [0:30]
+set ylabel "Proporção do custo da solução (em relação a ótima)"
+set xlabel "Tempos máximos de planejamento"
+plot "combat-visibility1.dat" using ($2+1):xticlabel(1) linecolor rgb "#F20000", "combat-visibility1.dat" using ($4+1):xticlabel(1) linecolor rgb "#F200EB", "combat-visibility1.dat" using ($5+1):xticlabel(1) linecolor rgb "#2100F2", "combat-visibility1.dat" using ($3+1):xticlabel(1) linecolor rgb "#0081F2", "combat-visibility1.dat" using ($7+1):xticlabel(1) linecolor rgb "#00E3F2", "combat-visibility1.dat" using ($8+1):xticlabel(1) linecolor rgb "#00F221", "combat-visibility1.dat" using ($9+1):xticlabel(1) linecolor rgb "#B5F200", "combat-visibility1.dat" using ($6+1):xticlabel(1) linecolor rgb "#F28E00"
+
+
+"lak503d-visibility1.dat" using ($9+1):xticlabel(1) linecolor rgb "#824500"
+
+
+
+-- Quantidade de ações tomadas --
+set ylabel "Intervalos de tempo"
+set xlabel "Mapas"
+
+plot "full-visibility-look4-numero-acoes.dat" using ($2*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($4*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($5*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($6*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($7*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($8*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($10*100):xticlabel(1), "full-visibility-look4-numero-acoes.dat" using ($9*100):xticlabel(1)
+
+
+-- Mapas x Qualidade Solução - Comparando lookaheads de mesmo algoritmo --
+válido somente para lsslrta(5) (set yrange[0:1600]), plrta (6), rtaa (8), tbaa(9, 10 em full-vis)
+vis10 - todos melhoram
+vis1 - nem sempre. tbaa e porta pioram em um caso
+full vis - todos melhoram
+
+set ylabel "Custo extra da solução (%)"
+set xlabel "Mapas"
+plot "full-visibility-look1-porcentagem_sol_otima.dat" using ($10*100):xticlabel(1) title "TMP <= 0,025s", "full-visibility-look2-porcentagem_sol_otima.dat" using ($10*100):xticlabel(1) title "TMP <= 0,050s", "full-visibility-look3-porcentagem_sol_otima.dat" using ($10*100):xticlabel(1) title "TMP <= 0,075s", "full-visibility-look4-porcentagem_sol_otima.dat" using ($10*100):xticlabel(1) title "TMP <= 0,10s"
+
+
+-- Dificuldade dos mapas --
+Tem necessidade de fazer um só para isso? Está bem visível nos de mapa x qualidade solução.
+
+-- Tempo episodio de busca --
+prta e lsslrta ficam super pequenos.
+
+set ylabel "Tempo médio do episódio de planejamento (s)"
+set xlabel "Mapas"
+
+set logscale y
+set yrange [0.00001:*]
+
+plot "visibility10-look4-tempo-medio-ep-busca.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "visibility10-look4-tempo-medio-ep-busca.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "visibility10-look4-tempo-medio-ep-busca.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "visibility10-look4-tempo-medio-ep-busca.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "visibility10-look4-tempo-medio-ep-busca.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "visibility10-look4-tempo-medio-ep-busca.dat" using ($9):xticlabel(1) linecolor rgb "#B5F200", "visibility10-look4-tempo-medio-ep-busca.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00"
+
+
+-- Tempo total de busca --
+- plrta fica muito grande, tirar?
+- no geral algoritmos melhores tem maior tempo total. Alguns apresentam um bom tradeoff. No entanto, para planejamento de caminhos, o que importa é o tempo máximo de episódio de busca.
+
+set yrange [0:300000]
+set ylabel "Tempo total de busca (%)"
+set xlabel "Mapas"
+plot "visibility10-look1-tempo-total-busca.dat" using 2:xticlabel(1) linecolor rgb "#F20000",  "visibility10-look1-tempo-total-busca.dat" using 4:xticlabel(1) linecolor rgb "#F200EB", "visibility10-look1-tempo-total-busca.dat" using 5:xticlabel(1) linecolor rgb "#2100F2", "visibility10-look1-tempo-total-busca.dat" using 3:xticlabel(1) linecolor rgb "#0081F2", "visibility10-look1-tempo-total-busca.dat" using 7:xticlabel(1) linecolor rgb "#00E3F2",   "visibility10-look1-tempo-total-busca.dat" using 8:xticlabel(1) linecolor rgb "#00F221",  "visibility10-look1-tempo-total-busca.dat" using 9:xticlabel(1) linecolor rgb "#B5F200", "visibility10-look1-tempo-total-busca.dat" using 6:xticlabel(1) linecolor rgb "#F28E00"
+
+
+tba*: "full-visibility-look1-tempo-total-busca.dat" using 9:xticlabel(1) linecolor rgb "#824500", 
+
+"visibility1-look4-tempo-total-busca.dat" using 0:6:6 with labels notitle
+using 0:2:2 with labels
+
+
+-- Estados expandidos --
+-plrta, novamente, muito grande
+
+set ylabel "Número de estados expandidos"
+set xlabel "Mapas"
+plot "visibility1-look4-estados-expandidos.dat" using 2:xticlabel(1), "visibility1-look4-estados-expandidos.dat" using 3:xticlabel(1), "visibility1-look4-estados-expandidos.dat" using 4:xticlabel(1), "visibility1-look4-estados-expandidos.dat" using 5:xticlabel(1), "visibility1-look4-estados-expandidos.dat" using 7:xticlabel(1), "visibility1-look4-estados-expandidos.dat" using 8:xticlabel(1), "visibility1-look4-estados-expandidos.dat" using 9:xticlabel(1)
+
+-- Número de execuções até convergência --
+-tbaa e plrta são melhores, mas estão bem empatadas
+
+set ylabel "Número de execuções"
+set xlabel "Mapas"
+plot "visibility10-look1-num-convergencia.dat" using 2:xticlabel(1) linecolor rgb "#0081F2", "visibility10-look1-num-convergencia.dat" using 3:xticlabel(1) linecolor rgb "#F200EB", "visibility10-look1-num-convergencia.dat" using 4:xticlabel(1) linecolor rgb "#2100F2", "visibility10-look1-num-convergencia.dat" using 5:xticlabel(1) linecolor rgb "#F28E00", "visibility10-look1-num-convergencia.dat" using 6:xticlabel(1) linecolor rgb "#00F221", "visibility10-look1-num-convergencia.dat" using 7:xticlabel(1) linecolor rgb "#B5F200"
+
+linecolor rgb "#F20000"
+linecolor rgb "#F200EB"
+linecolor rgb "#2100F2"
+linecolor rgb "#0081F2"
+linecolor rgb "#00E3F2"
+linecolor rgb "#00F221"
+linecolor rgb "#B5F200"
+linecolor rgb "#824500"
+linecolor rgb "#F28E00"
+
+
+-- Tempo total ate convergência --
+
+set ylabel "Tempo total (s)"
+set xlabel "Mapas"
+plot "visibility10-look4-tempo-convergencia.dat" using 2:xticlabel(1), "visibility10-look4-tempo-convergencia.dat" using 3:xticlabel(1), "visibility10-look4-tempo-convergencia.dat" using 4:xticlabel(1), "visibility10-look4-tempo-convergencia.dat" using 5:xticlabel(1), "visibility10-look4-tempo-convergencia.dat" using 6:xticlabel(1), "visibility10-look4-tempo-convergencia.dat" using 7:xticlabel(1)
+
+---- Tradeoff ----
+set ylabel "Tradeoff (%)"
+set xlabel "Mapas"
+
+set logscale y
+set yrange [0:5e+10]
+
+plot "full-visibility-look1-tradeoff.dat" using ($2):xticlabel(1) linecolor rgb "#F20000", "full-visibility-look1-tradeoff.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "full-visibility-look1-tradeoff.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "full-visibility-look1-tradeoff.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "full-visibility-look1-tradeoff.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "full-visibility-look1-tradeoff.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "full-visibility-look1-tradeoff.dat" using ($10):xticlabel(1) linecolor rgb "#B5F200", "full-visibility-look1-tradeoff.dat" using ($9):xticlabel(1) linecolor rgb "#824500", "full-visibility-look1-tradeoff.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00"
+
+plot "visibility1-look4-tradeoff.dat" using ($2):xticlabel(1) linecolor rgb "#F20000", "visibility1-look4-tradeoff.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "visibility1-look4-tradeoff.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "visibility1-look4-tradeoff.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "visibility1-look4-tradeoff.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "visibility1-look4-tradeoff.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "visibility1-look4-tradeoff.dat" using ($9):xticlabel(1) linecolor rgb "#B5F200", "visibility1-look4-tradeoff.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00"
+

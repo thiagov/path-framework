@@ -22,6 +22,8 @@ class LrtaK
   end
 
   def get_move(current_node, goal)
+    @updated = [] #usada somente para imprimir atualizados
+
     @expanded_states = 0
     planning_episode = true
 
@@ -39,7 +41,7 @@ class LrtaK
     end
     child = current_node.child(direction)
 
-    return child, nil, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
+    return child, @updated, {:planning_episode => planning_episode, :expanded_states => @expanded_states}
   end
 
   def lookahead_update_k(current_node, goal)
@@ -77,6 +79,7 @@ class LrtaK
 
     if new_h > h_value(current_node, goal)
       @grid_heuristic[current_node.i][current_node.j] = new_h
+      @updated << current_node #usada somente para imprimir atualizados
       return true
     end
     return false

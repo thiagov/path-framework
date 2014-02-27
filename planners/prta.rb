@@ -37,7 +37,7 @@ class Prta
       candidate = @path.last
     end
 
-    return candidate, nil, {:planning_episode => planning_episode, :expanded_states => expanded_states}
+    return candidate, @not_passable_array, {:planning_episode => planning_episode, :expanded_states => expanded_states}
   end
 
   #
