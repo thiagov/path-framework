@@ -55,7 +55,7 @@ class Tba
       next_node = @path.pop
     end
 
-    return next_node, nil, {:planning_episode => @planning_episode, :expanded_states => @expanded_states}
+    return next_node, path, {:planning_episode => @planning_episode, :expanded_states => @expanded_states}
   end
 
   #

@@ -54,9 +54,11 @@ set xlabel "Tempos máximos de planejamento"
 plot "combat-visibility1.dat" using ($2+1):xticlabel(1) linecolor rgb "#F20000", "combat-visibility1.dat" using ($4+1):xticlabel(1) linecolor rgb "#F200EB", "combat-visibility1.dat" using ($5+1):xticlabel(1) linecolor rgb "#2100F2", "combat-visibility1.dat" using ($3+1):xticlabel(1) linecolor rgb "#0081F2", "combat-visibility1.dat" using ($7+1):xticlabel(1) linecolor rgb "#00E3F2", "combat-visibility1.dat" using ($8+1):xticlabel(1) linecolor rgb "#00F221", "combat-visibility1.dat" using ($9+1):xticlabel(1) linecolor rgb "#B5F200", "combat-visibility1.dat" using ($6+1):xticlabel(1) linecolor rgb "#F28E00"
 
 
-"lak503d-visibility1.dat" using ($9+1):xticlabel(1) linecolor rgb "#824500"
+"lak503d-visibility1.dat" using ($5+1):xticlabel(1) linecolor rgb "#2100F2",
 
+-- Observabilidade do mapa x Qualidade da solução --
 
+plot "lak_025.dat" using ($5+1):xticlabel(1) linecolor rgb "#F20000", "lak_025.dat" using ($8+1):xticlabel(1) linecolor rgb "#00F221"
 
 -- Quantidade de ações tomadas --
 set ylabel "Intervalos de tempo"
@@ -88,7 +90,11 @@ set xlabel "Mapas"
 set logscale y
 set yrange [0.00001:*]
 
-plot "visibility10-look4-tempo-medio-ep-busca.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "visibility10-look4-tempo-medio-ep-busca.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "visibility10-look4-tempo-medio-ep-busca.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "visibility10-look4-tempo-medio-ep-busca.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "visibility10-look4-tempo-medio-ep-busca.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "visibility10-look4-tempo-medio-ep-busca.dat" using ($9):xticlabel(1) linecolor rgb "#B5F200", "visibility10-look4-tempo-medio-ep-busca.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00"
+plot "visibility10-look3-tempo-medio-ep-busca.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "visibility10-look3-tempo-medio-ep-busca.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "visibility10-look3-tempo-medio-ep-busca.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "visibility10-look3-tempo-medio-ep-busca.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "visibility10-look3-tempo-medio-ep-busca.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "visibility10-look3-tempo-medio-ep-busca.dat" using ($9):xticlabel(1) linecolor rgb "#B5F200", "visibility10-look3-tempo-medio-ep-busca.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00"
+
+
+plot "lak503d-visibility10.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "lak503d-visibility10.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "lak503d-visibility10.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "lak503d-visibility10.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "lak503d-visibility10.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "lak503d-visibility10.dat" using ($9):xticlabel(1) linecolor rgb "#B5F200", "lak503d-visibility10.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00"
+
 
 
 -- Tempo total de busca --
@@ -105,6 +111,12 @@ tba*: "full-visibility-look1-tempo-total-busca.dat" using 9:xticlabel(1) linecol
 
 "visibility1-look4-tempo-total-busca.dat" using 0:6:6 with labels notitle
 using 0:2:2 with labels
+
+
+set ylabel "Tempo total de busca (s)"
+set xlabel "Tempos máximos de planejamento"
+
+plot "combat-full-visibility.dat" using ($2):xticlabel(1) linecolor rgb "#F20000", "combat-full-visibility.dat" using ($4):xticlabel(1) linecolor rgb "#F200EB", "combat-full-visibility.dat" using ($5):xticlabel(1) linecolor rgb "#2100F2", "combat-full-visibility.dat" using ($3):xticlabel(1) linecolor rgb "#0081F2", "combat-full-visibility.dat" using ($7):xticlabel(1) linecolor rgb "#00E3F2", "combat-full-visibility.dat" using ($8):xticlabel(1) linecolor rgb "#00F221", "combat-full-visibility.dat" using ($10):xticlabel(1) linecolor rgb "#B5F200", "combat-full-visibility.dat" using ($6):xticlabel(1) linecolor rgb "#F28E00", "combat-full-visibility.dat" using ($9):xticlabel(1) linecolor rgb "#824500"
 
 
 -- Estados expandidos --
@@ -130,6 +142,11 @@ linecolor rgb "#00F221"
 linecolor rgb "#B5F200"
 linecolor rgb "#824500"
 linecolor rgb "#F28E00"
+
+
+set key outside;
+set key right top;
+plot "arena-full-visibility.dat" using ($2):xticlabel(1) linecolor rgb "#0081F2", "arena-full-visibility.dat" using ($3):xticlabel(1) linecolor rgb "#F200EB", "arena-full-visibility.dat" using ($4):xticlabel(1) linecolor rgb "#2100F2", "arena-full-visibility.dat" using ($5):xticlabel(1) linecolor rgb "#F28E00", "arena-full-visibility.dat" using ($6):xticlabel(1) linecolor rgb "#00F221", "arena-full-visibility.dat" using ($7):xticlabel(1) linecolor rgb "#B5F200"
 
 
 -- Tempo total ate convergência --

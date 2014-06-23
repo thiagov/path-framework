@@ -34,14 +34,14 @@ queue_size = ARGV[7].to_i
 # Initialize map and observation
 Map.instance.read_map(map_name)
 Observation.instance.set_fields
-#Observation.instance.view_all_map #Uncomment this line to have full observability
+Observation.instance.view_all_map #Uncomment this line to have full observability
 
-#initial_nodes = [Node.new(7, 46)]#, Node.new(27, 10), Node.new(10, 26)]
-#goal_nodes    = [Node.new(5, 68)]#, Node.new(15, 61), Node.new(13, 32)]
+initial_nodes = [Node.new(7, 46), Node.new(27, 10), Node.new(10, 26)]
+goal_nodes    = [Node.new(5, 68), Node.new(15, 61), Node.new(13, 32)]
 
 #teste5.map
-initial_nodes = [Node.new(10, 29)]
-goal_nodes    = [Node.new(10, 31)]
+#initial_nodes = [Node.new(10, 29)]
+#goal_nodes    = [Node.new(10, 31)]
 
 #teste8.map
 #initial_nodes = [Node.new(10, 29)]
@@ -221,6 +221,7 @@ class GameWindow < Gosu::Window
         @planner = set_planner(@algorithm, @initial_node, @lookahead, @goal, @queue_size)
         Observation.instance.set_fields
         Observation.instance.update_observation(@current_node.i, @current_node.j)
+Observation.instance.view_all_map #Uncomment this line to have full observability
         @pause = true
       end
     end
